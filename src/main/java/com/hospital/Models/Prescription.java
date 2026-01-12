@@ -4,9 +4,10 @@ import java.time.LocalDate;
 
 public class Prescription {
     private int prescriptionId;
-    private int appointmentId; // FK
+    private int appointmentId;
     private LocalDate issuedDate;
     private String notes;
+
 public Prescription(){}
     public Prescription(int prescriptionId, int appointmentId, LocalDate issuedDate, String notes) {
         this.prescriptionId = prescriptionId;
