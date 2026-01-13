@@ -57,6 +57,8 @@ public class PatientDao {
             while (rs.next()) {
                 patients.add(mapResultSetToPatient(rs));
             }
+            System.out.println("Patients loaded: " + patients.size());
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -89,6 +91,7 @@ public class PatientDao {
             ps.setString(6, patient.getEmail());
             ps.setInt(7, patient.getPatientId());
             int rowsAffected = ps.executeUpdate();
+            System.out.println(rowsAffected);
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -106,7 +109,10 @@ public class PatientDao {
         if (genderStr != null && !genderStr.isEmpty()) {
             patient.setGender(genderStr.charAt(0));
         }
-        patient.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
+        Date dob = rs.getDate("date_of_birth");
+        if (dob != null) {
+            patient.setDateOfBirth(dob.toLocalDate());
+        }
         patient.setPhone(rs.getString("phone"));
         patient.setEmail(rs.getString("email"));
         return patient;

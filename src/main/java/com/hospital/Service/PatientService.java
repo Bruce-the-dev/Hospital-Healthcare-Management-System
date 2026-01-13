@@ -44,9 +44,14 @@ public class PatientService {
         return patient;
     }
     public List<Patient> getAllPatients(){
-        loadCacheEmpty();
+        patientCache.clear();
+        List<Patient> patients = patientDAO.getAllPatients();
+        for (Patient p : patients) {
+            patientCache.put(p.getPatientId(), p);
+        }
         return new ArrayList<>(patientCache.values());
     }
+
     public boolean updatePatient(Patient patient){
         boolean success = patientDAO.updatePatient(patient);
         if (success) {
@@ -67,7 +72,7 @@ public class PatientService {
     public List<Patient> searchByLastName(String lastName) {
         loadCacheEmpty();
         return patientCache.values().stream()
-                .filter(p -> p.getLastName().equalsIgnoreCase(lastName))
+                .filter(p -> p.getLastName().toLowerCase().contains(lastName.toLowerCase()))
                 .collect(Collectors.toList());
     }
     // Sort by last name
@@ -87,4 +92,5 @@ public class PatientService {
     public void clearCache() {
         patientCache.clear();
     }
+
 }
