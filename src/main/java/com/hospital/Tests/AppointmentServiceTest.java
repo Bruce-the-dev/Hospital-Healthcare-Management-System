@@ -2,6 +2,7 @@ package com.hospital.Tests;
 
 import com.hospital.Models.Appointment;
 import com.hospital.Models.DTO.AppointmentReport;
+import com.hospital.Models.DTO.BootstrapDataLoader;
 import com.hospital.Models.DTO.FullAppointmentReport;
 import com.hospital.Service.AppointmentService;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class AppointmentServiceTest {
 
     public static void main(String[] args) {
-
+        new BootstrapDataLoader().loadInitialData();
         AppointmentService service = new AppointmentService();
 
         // ----------------- ADD APPOINTMENTS -----------------

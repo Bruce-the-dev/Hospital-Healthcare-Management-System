@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.geometry.Insets?>
+<VBox xmlns="http://javafx.com/javafx/17.0.2"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hospital.Controller.AppointmentController"
+      spacing="10"
+      alignment="TOP_CENTER">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <Text text="Appointment Management" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Patient:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="cmbPatient" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200"/>
+
+        <Label text="Doctor:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="cmbDoctor" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200"/>
+
+        <Label text="Appointment Date:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <DatePicker fx:id="dpDate" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Appointment Time (HH:MM):" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtTime" GridPane.rowIndex="3" GridPane.columnIndex="1" promptText="14:30"/>
+
+        <Label text="Status:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="cmbStatus" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+    </GridPane>
+
+    <HBox spacing="10">
+        <Button text="Add" onAction="#handleAddAppointment"/>
+        <Button text="Update" onAction="#handleUpdateAppointment"/>
+        <Button text="Delete" onAction="#handleDeleteAppointment"/>
+    </HBox>
+
+    <TableView fx:id="tblAppointments" prefHeight="300">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="colPatient" text="Patient" prefWidth="100"/>
+            <TableColumn fx:id="colDoctor" text="Doctor" prefWidth="100"/>
+            <TableColumn fx:id="colDept" text="Department" prefWidth="100"/>
+            <TableColumn fx:id="colDate" text="Date" prefWidth="100"/>
+            <TableColumn fx:id="colTime" text="Time"/>
+            <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+        </columns>
+    </TableView>
+</VBox>

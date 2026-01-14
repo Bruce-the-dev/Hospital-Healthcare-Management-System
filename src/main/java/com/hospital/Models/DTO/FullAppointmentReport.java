@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 
 public class FullAppointmentReport {
 
+    private int appointmentId;   // hidden but needed
+    private int patientId;       // needed for updates
+    private int doctorId;
     private final LocalDateTime appointmentDate;
     private final String status;
     private final String patientName;
@@ -20,6 +23,30 @@ public class FullAppointmentReport {
         this.patientName = patientName;
         this.doctorName = doctorName;
         this.departmentName = departmentName;
+    }
+
+    public int getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
+
+    public int getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
     }
 
     public LocalDateTime getAppointmentDate() {

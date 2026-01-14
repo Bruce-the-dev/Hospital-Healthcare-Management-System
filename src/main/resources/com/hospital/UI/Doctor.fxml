@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<ScrollPane fitToWidth="true"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hospital.Controller.DoctorController"
+>
+
+
+<VBox spacing="10">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+
+    <Label text="Doctor Management" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="First Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtFirstName" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Last Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtLastName" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Specialization:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtSpecialization" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="Department:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="cmbDepartment" GridPane.rowIndex="4" GridPane.columnIndex="1" prefWidth="200"/>
+    </GridPane>
+
+    <HBox spacing="10">
+        <Button text="Add" onAction="#handleAddDoctor"/>
+        <Button text="Update" onAction="#handleUpdateDoctor"/>
+        <Button text="Delete" onAction="#handleDeleteDoctor"/>
+    </HBox>
+
+    <TableView fx:id="tblDoctors" prefHeight="300">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="colFirstName" text="First Name" prefWidth="100"/>
+            <TableColumn fx:id="colLastName" text="Last Name" prefWidth="100"/>
+            <TableColumn fx:id="colSpecialization" text="Specialization" prefWidth="120"/>
+            <TableColumn fx:id="colDepartment" text="Department" prefWidth="120"/>
+        </columns>
+    </TableView>
+</VBox>
+</ScrollPane>

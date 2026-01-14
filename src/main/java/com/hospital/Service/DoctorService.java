@@ -1,6 +1,8 @@
 package com.hospital.Service;
 
+import com.hospital.Dao.DepartmentDAO;
 import com.hospital.Dao.DoctorDAO;
+import com.hospital.Models.Department;
 import com.hospital.Models.Doctor;
 
 import java.util.*;
@@ -10,7 +12,7 @@ public class DoctorService {
 
     private final DoctorDAO doctorDAO;
     private final Map<Integer, Doctor> doctorCache; // In-memory cache
-
+private DepartmentDAO dptDao = new DepartmentDAO() ;
     public DoctorService() {
         this.doctorDAO = new DoctorDAO();
         this.doctorCache = new HashMap<>();
@@ -18,10 +20,13 @@ public class DoctorService {
 
     // ----------------- CREATE -----------------
     public void addDoctor(Doctor doctor) {
+        Department exist= dptDao.getDepartmentById(doctor.getDepartmentId());
+if (exist!=null ){
         boolean success = doctorDAO.addDoctor(doctor);
         if (success) {
             doctorCache.put(doctor.getDoctorId(), doctor); // update cache
         }
+    }
     }
 
     // ----------------- READ -----------------

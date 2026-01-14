@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<ScrollPane fitToWidth="true"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+        fx:controller="com.hospital.Controller.DepartmentController"
+>
+
+
+<VBox
+      spacing="10"
+      alignment="TOP_CENTER">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+
+    <Label text="Department Management" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <HBox spacing="10">
+        <Label text="Department Name:"/>
+        <TextField fx:id="txtDepartmentName" promptText="Enter name"/>
+        <Button text="Add" onAction="#handleAddDepartment"/>
+        <Button text="Update" onAction="#handleUpdateDepartment"/>
+        <Button text="Delete" onAction="#handleDeleteDepartment"/>
+    </HBox>
+
+    <TableView fx:id="tblDepartments" prefHeight="300">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="colName" text="Name" prefWidth="200"/>
+        </columns>
+    </TableView>
+</VBox>
+
+</ScrollPane>
