@@ -72,8 +72,8 @@ public class PatientService {
     public List<Patient> searchByLastName(String lastName) {
         loadCacheEmpty();
         return patientCache.values().stream()
-                .filter(p -> p.getLastName().toLowerCase().contains(lastName.toLowerCase()))
-                .collect(Collectors.toList());
+                .filter(p -> p.getLastName().toLowerCase().
+                        contains(lastName.toLowerCase())).collect(Collectors.toList());
     }
     // Sort by last name
     public List<Patient> sortByLastName() {
