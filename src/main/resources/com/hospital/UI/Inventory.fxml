@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.hospital.Controller.InventoryController">
+
+    <!-- Top: Header -->
+    <top>
+        <Label text="Inventory Management" style="-fx-font-size: 20px; -fx-padding: 10;" BorderPane.alignment="CENTER"/>
+    </top>
+
+    <!-- Center: TableView -->
+    <center>
+        <TableView fx:id="tblInventory" prefHeight="300" prefWidth="600">
+            <columns>
+                <TableColumn fx:id="colMedication" text="Medication" prefWidth="200"/>
+                <TableColumn fx:id="colQuantity" text="Quantity" prefWidth="100"/>
+                <TableColumn fx:id="colLastUpdated" text="Last Updated" prefWidth="300"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <!-- Bottom: Controls -->
+    <bottom>
+        <VBox spacing="10" >
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <HBox spacing="10">
+                <Label text="Medication:"/>
+                <ComboBox fx:id="cmbMedication" prefWidth="200"/>
+                <Label text="Quantity:"/>
+                <TextField fx:id="txtQuantity" prefWidth="100"/>
+            </HBox>
+            <HBox spacing="10">
+                <Button fx:id="btnAddStock" text="Add Stock" prefWidth="100"/>
+                <Button fx:id="btnReduceStock" text="Reduce Stock" prefWidth="100"/>
+            </HBox>
+        </VBox>
+    </bottom>
+
+</BorderPane>

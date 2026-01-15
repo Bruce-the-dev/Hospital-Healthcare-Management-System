@@ -13,6 +13,9 @@ public class DepartmentController {
     private TextField txtDepartmentName;
 
     @FXML
+    private TextField txtLocation;
+
+    @FXML
     private TableView<Department> tblDepartments;
 
     @FXML
@@ -21,23 +24,40 @@ public class DepartmentController {
     @FXML
     private TableColumn<Department, String> colName;
 
+    @FXML
+    private TableColumn<Department, String> colLocation;
+
     private final DepartmentService departmentService = new DepartmentService();
     private final ObservableList<Department> departmentList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         // Bind table columns
-        colId.setCellValueFactory(data -> new javafx.beans.property.SimpleIntegerProperty(data.getValue().getDepartmentId()).asObject());
-        colName.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getName()));
+        colId.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleIntegerProperty(
+                        data.getValue().getDepartmentId()
+                ).asObject());
+
+        colName.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(
+                        data.getValue().getName()
+                ));
+
+        colLocation.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(
+                        data.getValue().getLocation()
+                ));
 
         loadDepartments();
 
-        // Listen for row selection to fill text field
-        tblDepartments.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                txtDepartmentName.setText(newSelection.getName());
-            }
-        });
+        // Fill form when table row is selected
+        tblDepartments.getSelectionModel().selectedItemProperty()
+                .addListener((obs, oldSelection, newSelection) -> {
+                    if (newSelection != null) {
+                        txtDepartmentName.setText(newSelection.getName());
+                        txtLocation.setText(newSelection.getLocation());
+                    }
+                });
     }
 
     private void loadDepartments() {
@@ -49,15 +69,18 @@ public class DepartmentController {
     @FXML
     private void handleAddDepartment() {
         String name = txtDepartmentName.getText().trim();
-        if (name.isEmpty()) {
-            showAlert("Validation Error", "Department name cannot be empty");
+        String location = txtLocation.getText().trim();
+
+        if (name.isEmpty() || location.isEmpty()) {
+            showAlert("Validation Error", "Department name and location cannot be empty");
             return;
         }
 
         Department dept = new Department();
         dept.setName(name);
-        departmentService.addDepartment(dept);
+        dept.setLocation(location);
 
+        departmentService.addDepartment(dept);
         loadDepartments();
         clearFields();
     }
@@ -71,12 +94,16 @@ public class DepartmentController {
         }
 
         String name = txtDepartmentName.getText().trim();
-        if (name.isEmpty()) {
-            showAlert("Validation Error", "Department name cannot be empty");
+        String location = txtLocation.getText().trim();
+
+        if (name.isEmpty() || location.isEmpty()) {
+            showAlert("Validation Error", "Department name and location cannot be empty");
             return;
         }
 
         selected.setName(name);
+        selected.setLocation(location);
+
         departmentService.updateDepartment(selected);
         loadDepartments();
         clearFields();
@@ -97,6 +124,7 @@ public class DepartmentController {
 
     private void clearFields() {
         txtDepartmentName.clear();
+        txtLocation.clear();
         tblDepartments.getSelectionModel().clearSelection();
     }
 

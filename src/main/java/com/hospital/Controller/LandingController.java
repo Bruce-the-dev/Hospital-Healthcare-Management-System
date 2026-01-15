@@ -30,7 +30,6 @@ public class LandingController {
     private void openAppointmentPage(ActionEvent event) throws IOException {
         loadPage("/com/hospital/UI/Appointment.fxml", "Appointment Management");
     }
-
     private void loadPage(String fxmlFile, String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = loader.load();
@@ -39,5 +38,10 @@ public class LandingController {
         stage.setScene(new Scene(root));
         stage.show();
     }
+@FXML
+    public void openInventoryPage(ActionEvent actionEvent) throws IOException {
+    loadPage("/com/hospital/UI/Inventory.fxml", "Inventory Management");
+
+}
 }
 

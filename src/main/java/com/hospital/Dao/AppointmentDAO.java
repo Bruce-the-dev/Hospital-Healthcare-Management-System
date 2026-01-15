@@ -199,7 +199,8 @@ public class AppointmentDAO {
         List<FullAppointmentReport> list = new ArrayList<>();
 
         String sql = """
-            SELECT a.appointment_date,
+            SELECT a.appointment_id,
+                   a.appointment_date,
                    a.status,
                    p.first_name AS patient_first,
                    p.last_name  AS patient_last,
@@ -217,13 +218,16 @@ public class AppointmentDAO {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                list.add(new FullAppointmentReport(
+                FullAppointmentReport report = new FullAppointmentReport(
                         rs.getTimestamp("appointment_date").toLocalDateTime(),
                         rs.getString("status"),
                         rs.getString("patient_first") + " " + rs.getString("patient_last"),
                         rs.getString("doctor_first") + " " + rs.getString("doctor_last"),
                         rs.getString("department_name")
-                ));
+                );
+
+                report.setAppointmentId(rs.getInt("appointment_id"));
+            list.add(report);
             }
         } catch (SQLException e) {
             e.printStackTrace();

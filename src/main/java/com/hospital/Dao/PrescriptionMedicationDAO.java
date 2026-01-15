@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class PrescriptionMedicationDAO {
 
-    public boolean addMedicationToPrescription(PrescriptionMedication pm) {
+    public void addMedicationToPrescription(PrescriptionMedication pm) {
         String sql = "INSERT INTO Prescription_Medication(prescription_id, medication_id, dosage) VALUES (?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
@@ -17,11 +17,10 @@ public class PrescriptionMedicationDAO {
             ps.setInt(2, pm.getMedicationId());
             ps.setString(3, pm.getDosage());
 
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
 }

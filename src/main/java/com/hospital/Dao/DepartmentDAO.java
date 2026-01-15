@@ -10,12 +10,13 @@ import java.util.List;
 public class DepartmentDAO {
 
     public boolean addDepartment(Department d) {
-        String sql = "INSERT INTO Department(name) VALUES (?)";
+        String sql = "INSERT INTO Department(name,location) VALUES (?,?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, d.getName());
+            ps.setString(2,d.getLocation());
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -56,6 +57,7 @@ public class DepartmentDAO {
                 Department d = new Department();
                 d.setDepartmentId(rs.getInt("department_id"));
                 d.setName(rs.getString("name"));
+                d.setLocation(rs.getString("location"));
                 list.add(d);
             }
 
@@ -72,6 +74,7 @@ public class DepartmentDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, dept.getName());
             ps.setString(2, dept.getLocation());
+            ps.setInt(3,dept.getDepartmentId());
             int rowsAffected = ps.executeUpdate();
             System.out.println(rowsAffected);
             return rowsAffected > 0;
