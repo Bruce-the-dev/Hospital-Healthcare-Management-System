@@ -235,6 +235,63 @@ public class AppointmentDAO {
         return list;
     }
 
+
+    public List<FullAppointmentReport> getAppointmentsWithoutPrescription() {
+
+        List<FullAppointmentReport> list = new ArrayList<>();
+
+        String sql = """
+        SELECT
+            a.appointment_id,
+            a.appointment_date,
+            a.status,
+            p.patient_id,
+            p.first_name||' '|| p.last_name AS patient_name,
+            d.doctor_id,
+            d.first_name||' '||d.last_name AS doctor_name,
+            dept.name AS department_name
+        FROM appointment a
+        JOIN patient p ON a.patient_id = p.patient_id
+        JOIN doctor d ON a.doctor_id = d.doctor_id
+        JOIN department dept ON d.department_id = dept.department_id
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM prescription pr
+            WHERE pr.appointment_id = a.appointment_id
+        )
+        ORDER BY a.appointment_date
+    """;
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                FullAppointmentReport dto = new FullAppointmentReport(
+                        rs.getTimestamp("appointment_date").toLocalDateTime(),
+                        rs.getString("status"),
+                        rs.getString("patient_name"),
+                        rs.getString("doctor_name"),
+                        rs.getString("department_name")
+                );
+
+// 🔑 set hidden identifiers
+                dto.setAppointmentId(rs.getInt("appointment_id"));
+                dto.setPatientId(rs.getInt("patient_id"));
+                dto.setDoctorId(rs.getInt("doctor_id"));
+
+                list.add(dto);
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+
     // ----------------- Helper -----------------
     private Appointment mapAppointment(ResultSet rs) throws SQLException {
         Appointment a = new Appointment();

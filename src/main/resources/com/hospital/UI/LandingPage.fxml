@@ -24,6 +24,10 @@
     <Button text="Manage Patients" onAction="#openPatientPage" prefWidth="250"/>
     <Button text="Manage Appointments" onAction="#openAppointmentPage" prefWidth="250"/>
     <Button text="Manage Inventory" onAction="#openInventoryPage" prefWidth="250"/>
+    <Button text="Manage Medications" onAction="#openMedsPage" prefWidth="250"/>
+    <Button text="Manage Prescriptions" onAction="#openPrescriptionsPage" prefWidth="250"/>
+    <Button text="Reports" onAction="#goToReports" prefWidth="200"/>
+
 
 </VBox>
 </ScrollPane>

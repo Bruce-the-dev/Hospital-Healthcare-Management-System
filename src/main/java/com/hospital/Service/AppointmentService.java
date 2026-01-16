@@ -74,6 +74,9 @@ public class AppointmentService {
         list.sort(Comparator.comparing(Appointment::getAppointmentDate));
         return list;
     }
+    public List<FullAppointmentReport> getAppointmentsWithoutPrescription() {
+        return appointmentDAO.getAppointmentsWithoutPrescription();
+    }
 
     public void clearCache() {
         appointmentCache.clear();

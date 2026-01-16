@@ -20,28 +20,44 @@ import java.time.LocalTime;
 public class AppointmentController {
 
     // ================= ADD MODE CONTROLS =================
-    @FXML private ComboBox<Patient> cmbPatient;
-    @FXML private ComboBox<Doctor> cmbDoctor;
-    @FXML private ComboBox<String> cmbStatus;
+    @FXML
+    private ComboBox<Patient> cmbPatient;
+    @FXML
+    private ComboBox<Doctor> cmbDoctor;
+    @FXML
+    private ComboBox<String> cmbStatus;
 
     // ================= UPDATE MODE CONTROLS =================
-    @FXML private TextField txtPatient;
-    @FXML private TextField txtDoctor;
-    @FXML private TextField txtStatus;
+    @FXML
+    private TextField txtPatient;
+    @FXML
+    private TextField txtDoctor;
+    @FXML
+    private TextField txtStatus;
 
     // ================= SHARED CONTROLS =================
-    @FXML private DatePicker dpDate;
-    @FXML private TextField txtTime;
+    @FXML
+    private DatePicker dpDate;
+    @FXML
+    private TextField txtTime;
 
     // ================= TABLE =================
-    @FXML private TableView<FullAppointmentReport> tblAppointments;
-    @FXML private TableColumn<FullAppointmentReport, Integer> colId;
-    @FXML private TableColumn<FullAppointmentReport, String> colPatient;
-    @FXML private TableColumn<FullAppointmentReport, String> colDoctor;
-    @FXML private TableColumn<FullAppointmentReport, String> colDept;
-    @FXML private TableColumn<FullAppointmentReport, LocalDate> colDate;
-    @FXML private TableColumn<FullAppointmentReport, String> colTime;
-    @FXML private TableColumn<FullAppointmentReport, String> colStatus;
+    @FXML
+    private TableView<FullAppointmentReport> tblAppointments;
+    @FXML
+    private TableColumn<FullAppointmentReport, Integer> colId;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colPatient;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colDoctor;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colDept;
+    @FXML
+    private TableColumn<FullAppointmentReport, LocalDate> colDate;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colTime;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colStatus;
 
     private final AppointmentService appointmentService = new AppointmentService();
     private final PatientService patientService = new PatientService();
@@ -102,7 +118,11 @@ public class AppointmentController {
             public String toString(Patient p) {
                 return p == null ? "" : p.getFirstName() + " " + p.getLastName();
             }
-            @Override public Patient fromString(String s) { return null; }
+
+            @Override
+            public Patient fromString(String s) {
+                return null;
+            }
         });
 
         cmbDoctor.setConverter(new StringConverter<>() {
@@ -110,7 +130,11 @@ public class AppointmentController {
             public String toString(Doctor d) {
                 return d == null ? "" : d.getFirstName() + " " + d.getLastName();
             }
-            @Override public Doctor fromString(String s) { return null; }
+
+            @Override
+            public Doctor fromString(String s) {
+                return null;
+            }
         });
 
         loadPatients();
@@ -175,6 +199,7 @@ public class AppointmentController {
         appointmentList.setAll(appointmentService.getFullAppointmentReport());
         tblAppointments.setItems(appointmentList);
     }
+
     @FXML
     private void handleCancelEdit() {
         exitUpdateMode();
@@ -190,11 +215,19 @@ public class AppointmentController {
             showAlert("Validation Error", "Please fill all fields");
             return;
         }
+        String timeText = txtTime.getText().trim();
+
+        if (timeText.matches("\\d:\\d{2}")) {
+            timeText = "0" + timeText;
+        }
+
+        LocalTime time = LocalTime.parse(timeText);
 
         LocalDateTime dateTime = LocalDateTime.of(
                 dpDate.getValue(),
-                LocalTime.parse(txtTime.getText().trim())
+                time
         );
+
 
         Appointment a = new Appointment();
         a.setPatientId(cmbPatient.getValue().getPatientId());

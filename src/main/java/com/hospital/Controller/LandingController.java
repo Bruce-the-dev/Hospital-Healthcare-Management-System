@@ -30,6 +30,7 @@ public class LandingController {
     private void openAppointmentPage(ActionEvent event) throws IOException {
         loadPage("/com/hospital/UI/Appointment.fxml", "Appointment Management");
     }
+
     private void loadPage(String fxmlFile, String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = loader.load();
@@ -38,10 +39,26 @@ public class LandingController {
         stage.setScene(new Scene(root));
         stage.show();
     }
-@FXML
-    public void openInventoryPage(ActionEvent actionEvent) throws IOException {
-    loadPage("/com/hospital/UI/Inventory.fxml", "Inventory Management");
 
-}
+    @FXML
+    public void openInventoryPage(ActionEvent actionEvent) throws IOException {
+        loadPage("/com/hospital/UI/Inventory.fxml", "Inventory Management");
+
+    }
+
+    @FXML
+    public void openMedsPage(ActionEvent actionEvent) throws IOException {
+        loadPage("/com/hospital/UI/Medication.fxml", "Medicine Management");
+
+    }
+
+    @FXML
+    public void openPrescriptionsPage(ActionEvent actionEvent) throws IOException {
+        loadPage("/com/hospital/UI/Prescription.fxml", "Prescription Management");
+    }
+@FXML
+    public void goToReports(ActionEvent actionEvent) throws IOException{
+    loadPage("/com/hospital/UI/Reports.fxml","Reports Management");
+    }
 }
 

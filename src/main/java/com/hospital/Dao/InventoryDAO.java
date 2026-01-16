@@ -1,5 +1,6 @@
 package com.hospital.Dao;
 
+import com.hospital.Models.DTO.InventoryViewDTO;
 import com.hospital.Models.Inventory;
 import com.hospital.Util.DBConnection;
 
@@ -16,7 +17,7 @@ public class InventoryDAO {
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
+            System.out.println(inventory.getMedicationId()+" "+inventory.getQuantity());
             ps.setInt(1, inventory.getMedicationId());
             ps.setInt(2, inventory.getQuantity());
             ps.setTimestamp(3, Timestamp.valueOf(inventory.getLastUpdated()));
@@ -99,4 +100,32 @@ public class InventoryDAO {
 
         return inventoryList;
     }
+    public List<InventoryViewDTO> getInventoryWithMedication() {
+        String sql = """
+        SELECT i.medication_id, m.name, i.quantity, i.last_updated
+        FROM inventory i
+        JOIN medication m ON i.medication_id = m.medication_id
+        ORDER BY m.name
+    """;
+
+        List<InventoryViewDTO> list = new ArrayList<>();
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(new InventoryViewDTO(
+                        rs.getInt("medication_id"),
+                        rs.getString("name"),
+                        rs.getInt("quantity"),
+                        rs.getTimestamp("last_updated").toLocalDateTime()
+                ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
 }

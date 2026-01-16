@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hospital.Controller.ReportsController"
+            prefWidth="600" prefHeight="500">
+
+    <top>
+        <Label text="Hospital Reports"
+               style="-fx-font-size: 20px; -fx-padding: 10;"
+               BorderPane.alignment="CENTER"/>
+    </top>
+
+    <center>
+        <VBox spacing="20" >
+            <padding><Insets topRightBottomLeft="10"/> </padding>
+
+            <Label text="Medication Usage Report" style="-fx-font-weight: bold"/>
+            <HBox spacing="10">
+                <TextField fx:id="txtMedicationSearch" promptText="Search Medication..." />
+                <Button text="Clear" onAction="#clearMedicationSearch"/>
+            </HBox>
+            <TableView fx:id="tblMedicationUsage" prefHeight="200">
+                <columns>
+                    <TableColumn fx:id="colMedicationName" text="Medication" prefWidth="200"/>
+                    <TableColumn fx:id="colTimesUsed" text="Times Used" prefWidth="100"/>
+                </columns>
+            </TableView>
+
+            <Label text="Prescriptions per Patient" style="-fx-font-weight: bold"/>
+            <HBox spacing="10">
+                <TextField fx:id="txtPatientSearch" promptText="Search Patient..." />
+                <Button text="Clear" onAction="#clearPatientSearch"/>
+            </HBox>
+            <TableView fx:id="tblPatientPrescriptions" prefHeight="200">
+                <columns>
+                    <TableColumn fx:id="colPatientName" text="Patient Name" prefWidth="200"/>
+                    <TableColumn fx:id="colPrescriptionCount" text="Total Prescriptions" prefWidth="100"/>
+                </columns>
+            </TableView>
+
+        </VBox>
+    </center>
+
+</BorderPane>

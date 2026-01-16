@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.hospital.Controller.PrescriptionController">
+
+        <top>
+            <Label text="Prescription" style="-fx-font-size: 20px; -fx-padding: 10;" BorderPane.alignment="CENTER"/>
+        </top>
+
+        <center>
+            <TableView fx:id="tblMedications" prefHeight="200">
+                <columns>
+                    <TableColumn fx:id="colMedication" text="Medication" prefWidth="200"/>
+                    <TableColumn fx:id="colDosage" text="Dosage" prefWidth="100"/>
+                </columns>
+            </TableView>
+        </center>
+
+        <bottom>
+            <VBox spacing="10" >
+                <padding>
+                    <Insets topRightBottomLeft="10"/>
+                </padding>
+                <HBox spacing="10">
+                    <Label text="Appointment Name:"/>
+                    <ComboBox fx:id="cmbAppointment" prefWidth="100"/>
+                </HBox>
+
+                <HBox spacing="10">
+                    <ComboBox fx:id="cmbMedication" prefWidth="200"/>
+                    <TextField fx:id="txtDosage" promptText="Dosage"/>
+                    <Button text="Add Medication" onAction="#handleAddMedication"/>
+                </HBox>
+                <TextArea fx:id="txtNotes" promptText="Prescription notes" prefRowCount="3"/>
+                <Button text="Save Prescription" onAction="#handleSavePrescription"/>
+            </VBox>
+        </bottom>
+
+    </BorderPane>

@@ -36,6 +36,7 @@
             </HBox>
             <HBox spacing="10">
                 <Button fx:id="btnAddStock" text="Add Stock" prefWidth="100"/>
+                <Button fx:id="btnUpdateStock" text="update Stock" prefWidth="100"/>
                 <Button fx:id="btnReduceStock" text="Reduce Stock" prefWidth="100"/>
             </HBox>
         </VBox>
