@@ -57,8 +57,7 @@ public class PrescriptionService {
         }
         return prescriptionCache.get(0);
     }
-
-    // Fetch reports by patient
+     // Fetch reports by patient
     public List<PrescriptionReportDTO> getReportsByPatient(int patientId) {
         // Cache per patientId
         if (!prescriptionCache.containsKey(patientId)) {
@@ -78,18 +77,21 @@ public class PrescriptionService {
         return prescriptionCache.get(-doctorId);
     }
 
-    // Optional: get a prescription by appointment (direct entity)
-    public Prescription getPrescriptionByAppointment(int appointmentId) {
-        return prescriptionDAO.getByAppointmentId(appointmentId);
-    }
-
-    // Optional: get all medications (for dropdowns)
-    public List<Medication> getAllMedications() {
-        return medicationDAO.getAllMedications();
-    }
+//    // Optional: get a prescription by appointment (direct entity)
+//    public Prescription getPrescriptionByAppointment(int appointmentId) {
+//        return prescriptionDAO.getByAppointmentId(appointmentId);
+//    }
+//
+//    // Optional: get all medications (for dropdowns)
+//    public List<Medication> getAllMedications() {
+//
+//        return medicationDAO.getAllMedications();
+//    }
 
     // Invalidate cache manually (if you update/delete)
     public void invalidateCache() {
+
         prescriptionCache.clear();
     }
+
 }

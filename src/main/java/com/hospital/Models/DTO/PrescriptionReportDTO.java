@@ -1,6 +1,7 @@
 package com.hospital.Models.DTO;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class PrescriptionReportDTO {
 
@@ -11,6 +12,7 @@ public class PrescriptionReportDTO {
     private String medicationName;
     private String dosage;
     private LocalDate issuedDate;
+
 
 
     public PrescriptionReportDTO() {}
@@ -59,6 +61,9 @@ public class PrescriptionReportDTO {
                 ", dosage='" + dosage + '\'' +
                 ", issuedDate=" + issuedDate +
                 '}';
+    }
+
+    public void setMedications(List<String> meds) {
     }
 }
 

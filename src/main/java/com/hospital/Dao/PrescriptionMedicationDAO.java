@@ -4,6 +4,8 @@ import com.hospital.Models.PrescriptionMedication;
 import com.hospital.Util.DBConnection;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrescriptionMedicationDAO {
 
@@ -23,4 +25,5 @@ public class PrescriptionMedicationDAO {
             e.printStackTrace();
         }
     }
+
 }

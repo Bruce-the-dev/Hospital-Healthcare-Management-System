@@ -5,11 +5,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class LandingController {
+
 
     @FXML
     private void openDepartmentPage(ActionEvent event) throws IOException {
@@ -59,6 +61,11 @@ public class LandingController {
 @FXML
     public void goToReports(ActionEvent actionEvent) throws IOException{
     loadPage("/com/hospital/UI/Reports.fxml","Reports Management");
+    }
+
+    public void btnAdvancedReports(ActionEvent actionEvent) throws IOException{
+        loadPage("/com/hospital/UI/AdvancedReports.fxml", "Advanced Report");
+
     }
 }
 

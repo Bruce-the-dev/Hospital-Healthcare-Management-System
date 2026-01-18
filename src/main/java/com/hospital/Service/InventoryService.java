@@ -1,8 +1,10 @@
 package com.hospital.Service;
 
 import com.hospital.Dao.InventoryDAO;
+import com.hospital.Dao.MedicationDAO;
 import com.hospital.Models.DTO.InventoryViewDTO;
 import com.hospital.Models.Inventory;
+import com.hospital.Models.Medication;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 public class InventoryService {
 
     private final InventoryDAO inventoryDAO = new InventoryDAO();
+    private final MedicationService medicationService= new MedicationService ();
     private static final int Low_stock =10;
 
     // Update stock
@@ -51,6 +54,10 @@ public class InventoryService {
         return getInventoryView().stream()
                 .filter(i -> i.getQuantity() <= Low_stock)
                 .toList();
+    }
+    public String getMedicationNameById(int medicationId) {
+        Medication med = medicationService.getMedicationById(medicationId);
+        return med != null ? med.getName() : "Unknown";
     }
 
 }

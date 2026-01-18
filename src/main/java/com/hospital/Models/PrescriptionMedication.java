@@ -5,7 +5,6 @@ public class PrescriptionMedication {
     private int medicationId;   // FK
     private String dosage;
 
-    public PrescriptionMedication() {}
     public PrescriptionMedication(int prescriptionId, int medicationId, String dosage) {
         this.prescriptionId = prescriptionId;
         this.medicationId = medicationId;
