@@ -12,7 +12,8 @@ public class DoctorService {
 
     private final DoctorDAO doctorDAO;
     private final Map<Integer, Doctor> doctorCache; // In-memory cache
-private DepartmentDAO dptDao = new DepartmentDAO() ;
+    private final DepartmentDAO dptDao = new DepartmentDAO();
+
     public DoctorService() {
         this.doctorDAO = new DoctorDAO();
         this.doctorCache = new HashMap<>();
@@ -20,13 +21,13 @@ private DepartmentDAO dptDao = new DepartmentDAO() ;
 
     // ----------------- CREATE -----------------
     public void addDoctor(Doctor doctor) {
-        Department exist= dptDao.getDepartmentById(doctor.getDepartmentId());
-if (exist!=null ){
-        boolean success = doctorDAO.addDoctor(doctor);
-        if (success) {
-            doctorCache.put(doctor.getDoctorId(), doctor); // update cache
+        Department exist = dptDao.getDepartmentById(doctor.getDepartmentId());
+        if (exist != null) {
+            boolean success = doctorDAO.addDoctor(doctor);
+            if (success) {
+                doctorCache.put(doctor.getDoctorId(), doctor); // update cache
+            }
         }
-    }
     }
 
     // ----------------- READ -----------------

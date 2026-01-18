@@ -67,5 +67,36 @@ public class MedicationDAO {
         }
         return null;
     }
+
+    public boolean deleteMedication(int medicationId) {
+        String sql = "DELETE FROM medication WHERE medication_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, medicationId);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateMedication(Medication selected) {
+        String sql = "UPDATE medication SET name=?,description=? WHERE medication_id =?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, selected.getName());
+            ps.setString(2, selected.getDescription());
+            ps.setInt(3, selected.getMedicationId());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
 

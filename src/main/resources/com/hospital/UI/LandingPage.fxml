@@ -1,35 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.control.ScrollPane?>
 
-<ScrollPane fitToWidth="true"
-            xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.hospital.Controller.LandingController">
+<TabPane xmlns="http://javafx.com/javafx"
+         xmlns:fx="http://javafx.com/fxml"
+         fx:controller="com.hospital.Controller.LandingController"
+         tabClosingPolicy="UNAVAILABLE">
 
+    <!-- ================== Management Tab ================== -->
+    <Tab text="Management">
+        <ScrollPane fitToWidth="true">
+            <VBox spacing="20"><padding><Insets topRightBottomLeft="20"/> </padding>
 
-<VBox spacing="15">
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
+                <Text text="Hospital Management Modules" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
-    <Text text="Hospital Management System"  style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+                <!-- Database & CRUD -->
+                <TitledPane text="Database &amp; CRUD">
+                    <VBox spacing="10" ><padding><Insets topRightBottomLeft="10"/> </padding>
+                        <Button text="Manage Departments" onAction="#openDepartmentPage" prefWidth="200"/>
+                        <Button text="Manage Doctors" onAction="#openDoctorPage" prefWidth="200"/>
+                        <Button text="Manage Patients" onAction="#openPatientPage" prefWidth="200"/>
+                    </VBox>
+                </TitledPane>
 
-    <Button text="Manage Departments" onAction="#openDepartmentPage" prefWidth="250"/>
-    <Button text="Manage Doctors" onAction="#openDoctorPage" prefWidth="250"/>
-    <Button text="Manage Patients" onAction="#openPatientPage" prefWidth="250"/>
-    <Button text="Manage Appointments" onAction="#openAppointmentPage" prefWidth="250"/>
-    <Button text="Manage Inventory" onAction="#openInventoryPage" prefWidth="250"/>
-    <Button text="Manage Medications" onAction="#openMedsPage" prefWidth="250"/>
-    <Button text="Manage Prescriptions" onAction="#openPrescriptionsPage" prefWidth="250"/>
-    <Button text="Reports" onAction="#goToReports" prefWidth="200"/>
-    <Button text="Reports" onAction="#btnAdvancedReports" layoutX="20" layoutY="180" />
+                <!-- Data Access & Operations -->
+                <TitledPane text="Appointments &amp; Inventory">
+                    <VBox spacing="10"><padding><Insets topRightBottomLeft="10"/> </padding>
+                        <Button text="Manage Appointments" onAction="#openAppointmentPage" prefWidth="200"/>
+                        <Button text="Manage Inventory" onAction="#openInventoryPage" prefWidth="200"/>
+                        <Button text="Manage Medications" onAction="#openMedsPage" prefWidth="200"/>
+                        <Button text="Manage Prescriptions" onAction="#openPrescriptionsPage" prefWidth="200"/>
+                    </VBox>
+                </TitledPane>
 
+            </VBox>
+        </ScrollPane>
+    </Tab>
 
+    <!-- ================== Reports Tab ================== -->
+    <Tab text="Reports">
+        <VBox spacing="20" ><padding><Insets topRightBottomLeft="20"/> </padding>
+            <Text text="Reports" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
 
-</VBox>
-</ScrollPane>
+            <TitledPane text="Medical Usage Reports">
+                <VBox spacing="10" ><padding><Insets topRightBottomLeft="10"/> </padding>
+                    <Button text="Per Patient / Prescription Usage" onAction="#goToReports" prefWidth="250"/>
+                    <Button text="All Appointments / Prescriptions / Inventory" onAction="#btnAdvancedReports"
+                            prefWidth="250"/>
+                </VBox>
+            </TitledPane>
+
+        </VBox>
+    </Tab>
+</TabPane>

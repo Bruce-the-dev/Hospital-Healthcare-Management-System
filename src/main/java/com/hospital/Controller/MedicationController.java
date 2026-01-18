@@ -27,14 +27,70 @@ public class MedicationController {
                 new javafx.beans.property.SimpleStringProperty(data.getValue().getDescription()));
 
         loadMedications();
+
+        // Populate form when a row is selected
+        tblMedication.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) populateForm(newSelection);
+        });
+    }
+
+    private void populateForm(Medication m) {
+        txtName.setText(m.getName());
+        txtDescription.setText(m.getDescription());
+    }
+
+    // ===================== Validation =====================
+    private boolean validateForm() {
+        if (txtName.getText().trim().isEmpty()) {
+            showAlert("Validation Error", "Medication name cannot be empty.");
+            return false;
+        }
+        if (txtDescription.getText().trim().isEmpty()) {
+            showAlert("Validation Error", "Medication description cannot be empty.");
+            return false;
+        }
+        return true;
+    }
+
+    // ===================== CRUD =====================
+    @FXML
+    private void handleAddMedication() {
+        if (!validateForm()) return;
+
+        medicationService.addMedication(
+                txtName.getText().trim(),
+                txtDescription.getText().trim()
+        );
+        loadMedications();
+        clearFields();
     }
 
     @FXML
-    private void handleAddMedication() {
-        medicationService.addMedication(
-                txtName.getText(),
-                txtDescription.getText()
-        );
+    private void handleUpdateMedication() {
+        Medication selected = tblMedication.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Selection Error", "Please select a medication to update.");
+            return;
+        }
+        if (!validateForm()) return;
+
+        selected.setName(txtName.getText().trim());
+        selected.setDescription(txtDescription.getText().trim());
+
+        medicationService.updateMedication(selected);
+        loadMedications();
+        clearFields();
+    }
+
+    @FXML
+    private void handleDeleteMedication() {
+        Medication selected = tblMedication.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Selection Error", "Please select a medication to delete.");
+            return;
+        }
+
+        medicationService.deleteMedication(selected.getMedicationId());
         loadMedications();
         clearFields();
     }
@@ -45,8 +101,18 @@ public class MedicationController {
         tblMedication.setItems(medicationList);
     }
 
+    @FXML
     private void clearFields() {
         txtName.clear();
         txtDescription.clear();
+        tblMedication.getSelectionModel().clearSelection();
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

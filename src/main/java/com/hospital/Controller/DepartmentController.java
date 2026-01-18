@@ -9,55 +9,27 @@ import javafx.scene.control.*;
 
 public class DepartmentController {
 
-    @FXML
-    private TextField txtDepartmentName;
-
-    @FXML
-    private TextField txtLocation;
-
-    @FXML
-    private TableView<Department> tblDepartments;
-
-    @FXML
-    private TableColumn<Department, Integer> colId;
-
-    @FXML
-    private TableColumn<Department, String> colName;
-
-    @FXML
-    private TableColumn<Department, String> colLocation;
+    @FXML private TextField txtDepartmentName;
+    @FXML private TextField txtLocation;
+    @FXML private TableView<Department> tblDepartments;
+    @FXML private TableColumn<Department, Integer> colId;
+    @FXML private TableColumn<Department, String> colName;
+    @FXML private TableColumn<Department, String> colLocation;
 
     private final DepartmentService departmentService = new DepartmentService();
     private final ObservableList<Department> departmentList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        // Bind table columns
-        colId.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleIntegerProperty(
-                        data.getValue().getDepartmentId()
-                ).asObject());
-
-        colName.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(
-                        data.getValue().getName()
-                ));
-
-        colLocation.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(
-                        data.getValue().getLocation()
-                ));
+        colId.setCellValueFactory(data -> new javafx.beans.property.SimpleIntegerProperty(data.getValue().getDepartmentId()).asObject());
+        colName.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getName()));
+        colLocation.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getLocation()));
 
         loadDepartments();
 
-        // Fill form when table row is selected
-        tblDepartments.getSelectionModel().selectedItemProperty()
-                .addListener((obs, oldSelection, newSelection) -> {
-                    if (newSelection != null) {
-                        txtDepartmentName.setText(newSelection.getName());
-                        txtLocation.setText(newSelection.getLocation());
-                    }
-                });
+        tblDepartments.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) populateForm(newSelection);
+        });
     }
 
     private void loadDepartments() {
@@ -66,19 +38,30 @@ public class DepartmentController {
         tblDepartments.setItems(departmentList);
     }
 
+    private void populateForm(Department dept) {
+        txtDepartmentName.setText(dept.getName());
+        txtLocation.setText(dept.getLocation());
+    }
+
+    private boolean validateForm() {
+        if (txtDepartmentName.getText().trim().isEmpty()) {
+            showAlert("Validation Error", "Department name cannot be empty.");
+            return true;
+        }
+        if (txtLocation.getText().trim().isEmpty()) {
+            showAlert("Validation Error", "Location cannot be empty.");
+            return true;
+        }
+        return false;
+    }
+
     @FXML
     private void handleAddDepartment() {
-        String name = txtDepartmentName.getText().trim();
-        String location = txtLocation.getText().trim();
-
-        if (name.isEmpty() || location.isEmpty()) {
-            showAlert("Validation Error", "Department name and location cannot be empty");
-            return;
-        }
+        if (validateForm()) return;
 
         Department dept = new Department();
-        dept.setName(name);
-        dept.setLocation(location);
+        dept.setName(txtDepartmentName.getText().trim());
+        dept.setLocation(txtLocation.getText().trim());
 
         departmentService.addDepartment(dept);
         loadDepartments();
@@ -92,17 +75,10 @@ public class DepartmentController {
             showAlert("Selection Error", "Please select a department to update");
             return;
         }
+        if (validateForm()) return;
 
-        String name = txtDepartmentName.getText().trim();
-        String location = txtLocation.getText().trim();
-
-        if (name.isEmpty() || location.isEmpty()) {
-            showAlert("Validation Error", "Department name and location cannot be empty");
-            return;
-        }
-
-        selected.setName(name);
-        selected.setLocation(location);
+        selected.setName(txtDepartmentName.getText().trim());
+        selected.setLocation(txtLocation.getText().trim());
 
         departmentService.updateDepartment(selected);
         loadDepartments();

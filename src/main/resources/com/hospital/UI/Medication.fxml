@@ -2,8 +2,8 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
+
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.hospital.Controller.MedicationController">
 
@@ -14,7 +14,7 @@
     </top>
 
     <center>
-        <TableView fx:id="tblMedication">
+        <TableView fx:id="tblMedication" prefHeight="300">
             <columns>
                 <TableColumn fx:id="colName" text="Name" prefWidth="200"/>
                 <TableColumn fx:id="colDescription" text="Description" prefWidth="400"/>
@@ -23,14 +23,26 @@
     </center>
 
     <bottom>
-        <VBox spacing="10" >
+        <VBox spacing="10">
             <padding>
                 <Insets topRightBottomLeft="10"/>
             </padding>
-            <TextField fx:id="txtName" promptText="Medication name"/>
-            <TextArea fx:id="txtDescription" promptText="Description" prefRowCount="2"/>
-            <Button text="Add Medication" onAction="#handleAddMedication"/>
+
+            <GridPane hgap="10" vgap="10">
+                <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="txtName" promptText="Medication name" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextArea fx:id="txtDescription" promptText="Description" prefRowCount="2"
+                          GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <HBox spacing="10">
+                <Button text="Add" onAction="#handleAddMedication"/>
+                <Button text="Update" onAction="#handleUpdateMedication"/>
+                <Button text="Delete" onAction="#handleDeleteMedication"/>
+                <Button text="Clear" onAction="#clearFields"/>
+            </HBox>
         </VBox>
     </bottom>
-
 </BorderPane>

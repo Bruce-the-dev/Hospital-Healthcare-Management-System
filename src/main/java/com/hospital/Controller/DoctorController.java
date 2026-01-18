@@ -30,7 +30,6 @@ public class DoctorController {
 
     @FXML
     public void initialize() {
-        // Setup TableView columns
         colId.setCellValueFactory(data -> new javafx.beans.property.SimpleIntegerProperty(data.getValue().getDoctorId()).asObject());
         colFirstName.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getFirstName()));
         colLastName.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getLastName()));
@@ -42,15 +41,8 @@ public class DoctorController {
         loadDepartments();
         loadDoctors();
 
-        // Populate fields on row selection
         tblDoctors.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                txtFirstName.setText(newSelection.getFirstName());
-                txtLastName.setText(newSelection.getLastName());
-                txtSpecialization.setText(newSelection.getSpecialization());
-                Department dept = departmentService.getDepartmentById(newSelection.getDepartmentId());
-                cmbDepartment.setValue(dept);
-            }
+            if (newSelection != null) populateForm(newSelection);
         });
     }
 
@@ -66,12 +58,42 @@ public class DoctorController {
         tblDoctors.setItems(doctorList);
     }
 
+    private void populateForm(Doctor d) {
+        txtFirstName.setText(d.getFirstName());
+        txtLastName.setText(d.getLastName());
+        txtSpecialization.setText(d.getSpecialization());
+        cmbDepartment.setValue(departmentService.getDepartmentById(d.getDepartmentId()));
+    }
+
+    // ==============================
+    // Validation
+    // ==============================
+    private boolean validateForm() {
+        if (txtFirstName.getText().trim().isEmpty()) {
+            showAlert("Validation Error", "First name is required.");
+            return true;
+        }
+        if (txtLastName.getText().trim().isEmpty()) {
+            showAlert("Validation Error", "Last name is required.");
+            return true;
+        }
+        if (txtSpecialization.getText().trim().isEmpty()) {
+            showAlert("Validation Error", "Specialization is required.");
+            return true;
+        }
+        if (cmbDepartment.getValue() == null) {
+            showAlert("Validation Error", "Please select a department.");
+            return true;
+        }
+        return false;
+    }
+
+    // ==============================
+    // CRUD Handlers
+    // ==============================
     @FXML
     private void handleAddDoctor() {
-        if (cmbDepartment.getValue() == null) {
-            showAlert("Validation Error", "Please select a department");
-            return;
-        }
+        if (validateForm()) return;
 
         Doctor d = new Doctor();
         d.setFirstName(txtFirstName.getText().trim());
@@ -91,11 +113,7 @@ public class DoctorController {
             showAlert("Selection Error", "Please select a doctor to update");
             return;
         }
-
-        if (cmbDepartment.getValue() == null) {
-            showAlert("Validation Error", "Please select a department");
-            return;
-        }
+        if (validateForm()) return;
 
         selected.setFirstName(txtFirstName.getText().trim());
         selected.setLastName(txtLastName.getText().trim());
@@ -136,4 +154,3 @@ public class DoctorController {
         alert.showAndWait();
     }
 }
-

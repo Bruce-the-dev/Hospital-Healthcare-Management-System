@@ -8,36 +8,47 @@
 
     <!-- Top: Header -->
     <top>
-        <Label text="Inventory Management" style="-fx-font-size: 20px; -fx-padding: 10;" BorderPane.alignment="CENTER"/>
+        <Label text="Inventory Management"
+               style="-fx-font-size: 20px; -fx-padding: 10;"
+               BorderPane.alignment="CENTER"/>
     </top>
 
     <!-- Center: TableView -->
     <center>
-        <TableView fx:id="tblInventory" prefHeight="300" prefWidth="600">
-            <columns>
-                <TableColumn fx:id="colMedication" text="Medication" prefWidth="200"/>
-                <TableColumn fx:id="colQuantity" text="Quantity" prefWidth="100"/>
-                <TableColumn fx:id="colLastUpdated" text="Last Updated" prefWidth="300"/>
-            </columns>
-        </TableView>
+        <VBox spacing="5">
+            <TableView fx:id="tblInventory" prefHeight="300" prefWidth="600">
+                <columns>
+                    <TableColumn fx:id="colMedication" text="Medication" prefWidth="200"/>
+                    <TableColumn fx:id="colQuantity" text="Quantity" prefWidth="100"/>
+                    <TableColumn fx:id="colLastUpdated" text="Last Updated" prefWidth="300"/>
+                </columns>
+            </TableView>
+            <Label fx:id="lblLowStock" style="-fx-text-fill: red; -fx-font-weight: bold;"/>
+        </VBox>
     </center>
 
     <!-- Bottom: Controls -->
     <bottom>
-        <VBox spacing="10" >
+        <VBox spacing="10">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
+
+            <!-- Input row -->
             <HBox spacing="10">
                 <Label text="Medication:"/>
-                <ComboBox fx:id="cmbMedication" prefWidth="200"/>
+                <ComboBox fx:id="cmbMedication" prefWidth="200" visible="false" managed="false"/>
                 <Label text="Quantity:"/>
-                <TextField fx:id="txtQuantity" prefWidth="100"/>
+                <TextField fx:id="txtQuantity" prefWidth="100" promptText="Enter quantity" visible="false" managed="false"/>
             </HBox>
+
+            <!-- Action buttons row -->
             <HBox spacing="10">
-                <Button fx:id="btnAddStock" text="Add Stock" prefWidth="100"/>
-                <Button fx:id="btnUpdateStock" text="update Stock" prefWidth="100"/>
-                <Button fx:id="btnReduceStock" text="Reduce Stock" prefWidth="100"/>
+                <Button fx:id="btnPlus" text="+" prefWidth="50" onAction="#handlePlus"/>
+                <Button fx:id="btnAddStock" text="Add Stock" prefWidth="120" visible="false" managed="false" onAction="#handleAddStock"/>
+                <Button fx:id="btnUpdateStock" text="Update Stock" prefWidth="120" visible="false" managed="false" onAction="#handleUpdateStock"/>
+                <Button fx:id="btnReduceStock" text="Reduce Stock" prefWidth="120" onAction="#handleReduceStock"/>
+                <Button fx:id="btnCancel" text="Cancel" prefWidth="120" visible="false" managed="false" onAction="#handleCancel"/>
             </HBox>
         </VBox>
     </bottom>

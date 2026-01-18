@@ -21,73 +21,37 @@
     <GridPane hgap="10" vgap="10">
 
         <!-- ================= Patient ================= -->
-        <Label text="Patient:"
-               GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-
-        <ComboBox fx:id="cmbPatient"
-                  GridPane.rowIndex="0" GridPane.columnIndex="1"
-                  prefWidth="200"/>
-
-        <TextField fx:id="txtPatient"
-                   GridPane.rowIndex="0" GridPane.columnIndex="2"
-                   prefWidth="200"
-                   editable="false"
-                   visible="false"
-                   managed="false"/>
+        <Label text="Patient:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="cmbPatient" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200" visible="false" managed="false"/>
+        <TextField fx:id="txtPatient" GridPane.rowIndex="0" GridPane.columnIndex="2" prefWidth="200" editable="false" visible="false" managed="false"/>
 
         <!-- ================= Doctor ================= -->
-        <Label text="Doctor:"
-               GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-
-        <ComboBox fx:id="cmbDoctor"
-                  GridPane.rowIndex="1" GridPane.columnIndex="1"
-                  prefWidth="200"/>
-
-        <TextField fx:id="txtDoctor"
-                   GridPane.rowIndex="1" GridPane.columnIndex="2"
-                   prefWidth="200"
-                   editable="false"
-                   visible="false"
-                   managed="false"/>
+        <Label text="Doctor:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="cmbDoctor" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200" visible="false" managed="false"/>
+        <TextField fx:id="txtDoctor" GridPane.rowIndex="1" GridPane.columnIndex="2" prefWidth="200" editable="false" visible="false" managed="false"/>
 
         <!-- ================= Date ================= -->
-        <Label text="Appointment Date:"
-               GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-
-        <DatePicker fx:id="dpDate"
-                    GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Label text="Appointment Date:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <DatePicker fx:id="dpDate" GridPane.rowIndex="2" GridPane.columnIndex="1" visible="false" managed="false"/>
 
         <!-- ================= Time ================= -->
-        <Label text="Appointment Time (HH:MM):"
-               GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-
-        <TextField fx:id="txtTime"
-                   GridPane.rowIndex="3" GridPane.columnIndex="1"
-                   promptText="14:30"/>
+        <Label text="Appointment Time (HH:MM):" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtTime" GridPane.rowIndex="3" GridPane.columnIndex="1" promptText="14:30" visible="false" managed="false"/>
 
         <!-- ================= Status ================= -->
-        <Label text="Status:"
-               GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-
-        <ComboBox fx:id="cmbStatus"
-                  GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-
-        <TextField fx:id="txtStatus"
-                   GridPane.rowIndex="4" GridPane.columnIndex="2"
-                   prefWidth="200"
-                   visible="false"
-                   editable="false"
-                   managed="false"/>
+        <Label text="Status:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="cmbStatus" GridPane.rowIndex="4" GridPane.columnIndex="1" visible="false" managed="false"/>
+        <TextField fx:id="txtStatus" GridPane.rowIndex="4" GridPane.columnIndex="2" prefWidth="200" editable="false" visible="false" managed="false"/>
 
     </GridPane>
 
     <!-- ================= Buttons ================= -->
     <HBox spacing="10">
-        <Button text="Add" onAction="#handleAddAppointment"/>
-        <Button text="Update" onAction="#handleUpdateAppointment"/>
-        <Button text="Delete" onAction="#handleDeleteAppointment"/>
-        <Button text="Cancel" onAction="#handleCancelEdit"/>
-
+        <Button fx:id="btnPlus" text="+" onAction="#handlePlus"/>
+        <Button fx:id="btnAdd" text="Add" onAction="#handleAddAppointment" visible="false" managed="false"/>
+        <Button fx:id="btnUpdate" text="Update" onAction="#handleUpdateAppointment" visible="false" managed="false"/>
+        <Button fx:id="btnDelete" text="Delete" onAction="#handleDeleteAppointment"/>
+        <Button fx:id="btnCancel" text="Cancel" onAction="#handleCancelEdit" visible="false" managed="false"/>
     </HBox>
 
     <!-- ================= Table ================= -->

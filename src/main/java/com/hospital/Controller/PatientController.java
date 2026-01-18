@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 public class PatientController {
 
@@ -63,19 +64,80 @@ public class PatientController {
         genderBox.setValue(String.valueOf(p.getGender()));
     }
 
+    // ================================
+    // Validation logic
+    // ================================
+    private boolean validateForm() {
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String phone = phoneField.getText().trim();
+        String email = emailField.getText().trim();
+        LocalDate dob = dobPicker.getValue();
+        String gender = genderBox.getValue();
+
+        if (firstName.isEmpty()) {
+            showAlert("Validation Error", "First name is required.");
+            return true;
+        }
+
+        if (lastName.isEmpty()) {
+            showAlert("Validation Error", "Last name is required.");
+            return true;
+        }
+
+        if (gender == null || (!gender.equals("M") && !gender.equals("F"))) {
+            showAlert("Validation Error", "Select a valid gender.");
+            return true;
+        }
+
+        if (dob == null || dob.isAfter(LocalDate.now())) {
+            showAlert("Validation Error", "Select a valid date of birth.");
+            return true;
+        }
+
+        if (!phone.matches("\\d{10,15}")) { // 10-15 digits
+            showAlert("Validation Error", "Enter a valid phone number (10-15 digits).");
+            return true;
+        }
+
+        if (!email.isEmpty() && !isValidEmail(email)) {
+            showAlert("Validation Error", "Enter a valid email address.");
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isValidEmail(String email) {
+        Pattern pattern = Pattern.compile("^[\\w-.]+@[\\w-]+\\.[a-zA-Z]{2,}$");
+        return pattern.matcher(email).matches();
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    // ================================
+    // CRUD Handlers
+    // ================================
     @FXML
     private void handleAdd() {
+        if (validateForm()) return;
+
         Patient p = new Patient();
-        p.setFirstName(firstNameField.getText());
-        p.setLastName(lastNameField.getText());
-        if (genderBox.getValue() == null) return;
+        p.setFirstName(firstNameField.getText().trim());
+        p.setLastName(lastNameField.getText().trim());
         p.setGender(genderBox.getValue().charAt(0));
         p.setDateOfBirth(dobPicker.getValue());
-        p.setPhone(phoneField.getText());
-        p.setEmail(emailField.getText());
+        p.setPhone(phoneField.getText().trim());
+        p.setEmail(emailField.getText().trim());
 
         boolean result = patientService.addPatient(p);
-        System.out.println(result);
+        if (result) showAlert("Success", "Patient added successfully!");
         loadPatients();
         handleClear();
     }
@@ -85,15 +147,17 @@ public class PatientController {
         Patient p = patientTable.getSelectionModel().getSelectedItem();
         if (p == null) return;
 
-        p.setFirstName(firstNameField.getText());
-        p.setLastName(lastNameField.getText());
+        if (validateForm()) return;
+
+        p.setFirstName(firstNameField.getText().trim());
+        p.setLastName(lastNameField.getText().trim());
         p.setGender(genderBox.getValue().charAt(0));
         p.setDateOfBirth(dobPicker.getValue());
-        p.setPhone(phoneField.getText());
-        p.setEmail(emailField.getText());
+        p.setPhone(phoneField.getText().trim());
+        p.setEmail(emailField.getText().trim());
 
         boolean result = patientService.updatePatient(p);
-        System.out.println(result);
+        if (result) showAlert("Success", "Patient updated successfully!");
         loadPatients();
     }
 
@@ -102,8 +166,8 @@ public class PatientController {
         Patient p = patientTable.getSelectionModel().getSelectedItem();
         if (p == null) return;
 
-boolean result= patientService.deletePatient(p.getPatientId());
-        System.out.println(result);
+        boolean result = patientService.deletePatient(p.getPatientId());
+        if (result) showAlert("Success", "Patient deleted successfully!");
         loadPatients();
         handleClear();
     }
@@ -116,7 +180,8 @@ boolean result= patientService.deletePatient(p.getPatientId());
             patientList.setAll(
                     patientService.searchByLastName(searchField.getText())
             );
-        }}
+        }
+    }
 
     @FXML
     private void handleClear() {

@@ -4,7 +4,6 @@ import com.hospital.Models.DTO.FullAppointmentReport;
 import com.hospital.Models.Medication;
 import com.hospital.Models.Prescription;
 import com.hospital.Models.PrescriptionMedication;
-import com.hospital.Models.DTO.PrescriptionReportDTO;
 import com.hospital.Service.AppointmentService;
 import com.hospital.Service.MedicationService;
 import com.hospital.Service.PrescriptionService;
@@ -26,47 +25,37 @@ public class PrescriptionController {
     @FXML private TextArea txtNotes;
 
     @FXML private ComboBox<FullAppointmentReport> cmbAppointment; // Appointment selector
+    @FXML private Button btnSavePrescription; // Fix fx:id reference
 
     private final MedicationService medicationService = new MedicationService();
     private final PrescriptionService prescriptionService = new PrescriptionService();
+    private final AppointmentService appointmentService = new AppointmentService();
 
     private final ObservableList<PrescriptionMedication> medications = FXCollections.observableArrayList();
 
-        private final AppointmentService appointmentService = new AppointmentService();
     @FXML
     public void initialize() {
-
-
+        // ---------- Appointments ----------
         ObservableList<FullAppointmentReport> appointments =
-                FXCollections.observableArrayList(
-                        appointmentService.getAppointmentsWithoutPrescription()
-                );
-
+                FXCollections.observableArrayList(appointmentService.getAppointmentsWithoutPrescription());
         cmbAppointment.setItems(appointments);
 
-        // Display patient + doctor + issued date
         cmbAppointment.setConverter(new StringConverter<>() {
             @Override
             public String toString(FullAppointmentReport dto) {
                 if (dto == null) return "";
-                return dto.getPatientName() + " - " +
-                        dto.getDoctorName() + " - " +
+                return dto.getPatientName() + " - " + dto.getDoctorName() + " - " +
                         dto.getAppointmentDate().toLocalDate();
             }
 
             @Override
             public FullAppointmentReport fromString(String string) {
-                return null;
+                return null; // ComboBox not editable
             }
         });
 
-
-
-        // ============================
-        // Setup Medication ComboBox
-        // ============================
+        // ---------- Medications ----------
         cmbMedication.setItems(FXCollections.observableArrayList(medicationService.getAllMedications()));
-
         cmbMedication.setConverter(new StringConverter<>() {
             @Override
             public String toString(Medication medication) {
@@ -75,13 +64,11 @@ public class PrescriptionController {
 
             @Override
             public Medication fromString(String string) {
-                return null; // ComboBox not editable
+                return null;
             }
         });
 
-        // ============================
-        // Setup Medications Table
-        // ============================
+        // ---------- Table ----------
         colMedication.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(
                         medicationService.getMedicationById(data.getValue().getMedicationId()).getName()
@@ -90,14 +77,30 @@ public class PrescriptionController {
         colDosage.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(data.getValue().getDosage())
         );
-
         tblMedications.setItems(medications);
 
+        // ---------- Button states ----------
+        btnSavePrescription.setDisable(true); // initially disabled
+
+        // Enable Save button only when there’s at least one medication
+        medications.addListener((javafx.collections.ListChangeListener<PrescriptionMedication>) c -> {
+            btnSavePrescription.setDisable(medications.isEmpty());
+        });
+
+        // Disable Add Medication unless both fields are filled
+        txtDosage.textProperty().addListener((obs, oldVal, newVal) -> updateAddButtonState());
+        cmbMedication.valueProperty().addListener((obs, oldVal, newVal) -> updateAddButtonState());
     }
 
-    // ============================
-    // Add Medication to Table
-    // ============================
+    // Enable/disable Add Medication button
+    private void updateAddButtonState() {
+        boolean disable = cmbMedication.getValue() == null || txtDosage.getText().trim().isEmpty();
+        // Assuming your FXML has no fx:id for Add button, you can use lookup:
+        Button btnAdd = (Button) tblMedications.getScene().lookup(".button[text='Add Medication']");
+        if (btnAdd != null) btnAdd.setDisable(disable);
+    }
+
+    // ---------- Add Medication ----------
     @FXML
     private void handleAddMedication() {
         Medication med = cmbMedication.getValue();
@@ -114,9 +117,7 @@ public class PrescriptionController {
         txtDosage.clear();
     }
 
-    // ============================
-    // Save Prescription
-    // ============================
+    // ---------- Save Prescription ----------
     @FXML
     private void handleSavePrescription() {
         FullAppointmentReport selectedAppointment = cmbAppointment.getValue();
@@ -125,18 +126,16 @@ public class PrescriptionController {
             return;
         }
 
-        int appointmentId = selectedAppointment.getAppointmentId();
-
         if (medications.isEmpty()) {
             showAlert("Validation Error", "Add at least one medication");
             return;
         }
 
         try {
-            prescriptionService.addPrescription(
-                    new Prescription(0, appointmentId, LocalDate.now(), txtNotes.getText()),
-                    medications
-            );
+            Prescription presc = new Prescription(0, selectedAppointment.getAppointmentId(),
+                    LocalDate.now(), txtNotes.getText());
+
+            prescriptionService.addPrescription(presc, medications);
 
             medications.clear();
             txtNotes.clear();
@@ -148,9 +147,7 @@ public class PrescriptionController {
         }
     }
 
-    // ============================
-    // Helper: Alert
-    // ============================
+    // ---------- Helper: Alert ----------
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
