@@ -1,0 +1,26 @@
+[
+  {
+    "patientId": 1,
+    "notes": [
+      {
+        "date": "2026-01-01",
+        "observation": "Mild fever, temperature 100.4F",
+        "medications": ["Paracetamol 500mg"]
+      },
+      {
+        "date": "2026-01-15",
+        "observation": "Follow-up: no symptoms, fever resolved"
+      }
+    ]
+  },
+  {
+    "patientId": 2,
+    "notes": [
+      {
+        "date": "2026-01-03",
+        "observation": "Cough and cold, mild headache",
+        "medications": ["Paracetamol 500mg", "Amoxicillin 250mg"]
+      }
+    ]
+  }
+]
