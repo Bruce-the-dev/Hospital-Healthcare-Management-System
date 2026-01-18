@@ -27,6 +27,8 @@
     <Button text="Manage Medications" onAction="#openMedsPage" prefWidth="250"/>
     <Button text="Manage Prescriptions" onAction="#openPrescriptionsPage" prefWidth="250"/>
     <Button text="Reports" onAction="#goToReports" prefWidth="200"/>
+    <Button text="Reports" onAction="#btnAdvancedReports" layoutX="20" layoutY="180" />
+
 
 
 </VBox>

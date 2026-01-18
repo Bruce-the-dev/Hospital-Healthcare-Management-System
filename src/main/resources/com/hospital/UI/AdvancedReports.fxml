@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<TabPane xmlns="http://javafx.com/javafx/21"
+         xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="com.hospital.Controller.AdvancedReportsController">
+
+    <!-- ================= Appointments ================= -->
+    <Tab text="Appointments">
+        <VBox spacing="10"><padding><Insets topRightBottomLeft="10"/> </padding>
+            <TextField fx:id="txtApptSearch" promptText="Search patient or doctor"/>
+
+            <TableView fx:id="tblAppointments">
+                <columns>
+                    <TableColumn fx:id="colApptPatient" text="Patient"/>
+                    <TableColumn fx:id="colApptDoctor" text="Doctor"/>
+                    <TableColumn fx:id="colApptDept" text="Department"/>
+                    <TableColumn fx:id="colApptDate" text="Date"/>
+                    <TableColumn fx:id="colApptTime" text="Time"/>
+                    <TableColumn fx:id="colApptStatus" text="Status"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </Tab>
+
+    <!-- ================= Prescriptions ================= -->
+    <Tab text="Prescriptions">
+        <VBox spacing="10"><padding><Insets topRightBottomLeft="10"/> </padding>
+            <TextField fx:id="txtPrescSearch" promptText="Search patient, doctor or medication"/>
+
+            <TableView fx:id="tblPrescriptions">
+                <columns>
+                    <TableColumn fx:id="colPrescPatient" text="Patient"/>
+                    <TableColumn fx:id="colPrescDoctor" text="Doctor"/>
+                    <TableColumn fx:id="colPrescMedication" text="Medication"/>
+                    <TableColumn fx:id="colPrescDosage" text="Dosage"/>
+                    <TableColumn fx:id="colPrescDate" text="Date"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </Tab>
+
+    <!-- ================= Inventory ================= -->
+    <Tab text="Inventory">
+        <VBox spacing="10" ><padding><Insets topRightBottomLeft="10"/> </padding>
+            <TextField fx:id="txtInvSearch" promptText="Search medication"/>
+
+            <TableView fx:id="tblInventory">
+                <columns>
+                    <TableColumn fx:id="colInvMedication" text="Medication"/>
+                    <TableColumn fx:id="colInvQty" text="Quantity"/>
+                    <TableColumn fx:id="colInvLastUpdated" text="Last Updated"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </Tab>
+
+</TabPane>
