@@ -17,33 +17,49 @@ import java.time.format.DateTimeFormatter;
 
 public class AdvancedReportsController {
 
-    // ===== Search Fields =====
-    @FXML private TextField txtApptSearch;
-    @FXML private TextField txtPrescSearch;
-    @FXML private TextField txtInvSearch;
+    @FXML
+    private TextField txtApptSearch;
+    @FXML
+    private TextField txtPrescSearch;
+    @FXML
+    private TextField txtInvSearch;
 
-    // ===== Appointment Tab =====
-    @FXML private TableView<FullAppointmentReport> tblAppointments;
-    @FXML private TableColumn<FullAppointmentReport, String> colApptPatient;
-    @FXML private TableColumn<FullAppointmentReport, String> colApptDoctor;
-    @FXML private TableColumn<FullAppointmentReport, String> colApptDept;
-    @FXML private TableColumn<FullAppointmentReport, String> colApptDate;
-    @FXML private TableColumn<FullAppointmentReport, String> colApptTime;
-    @FXML private TableColumn<FullAppointmentReport, String> colApptStatus;
+    @FXML
+    private TableView<FullAppointmentReport> tblAppointments;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colApptPatient;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colApptDoctor;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colApptDept;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colApptDate;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colApptTime;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colApptStatus;
 
-    // ===== Prescription Tab =====
-    @FXML private TableView<PrescriptionReportDTO> tblPrescriptions;
-    @FXML private TableColumn<PrescriptionReportDTO, String> colPrescPatient;
-    @FXML private TableColumn<PrescriptionReportDTO, String> colPrescDoctor;
-    @FXML private TableColumn<PrescriptionReportDTO, String> colPrescMedication;
-    @FXML private TableColumn<PrescriptionReportDTO, String> colPrescDosage;
-    @FXML private TableColumn<PrescriptionReportDTO, String> colPrescDate;
+    @FXML
+    private TableView<PrescriptionReportDTO> tblPrescriptions;
+    @FXML
+    private TableColumn<PrescriptionReportDTO, String> colPrescPatient;
+    @FXML
+    private TableColumn<PrescriptionReportDTO, String> colPrescDoctor;
+    @FXML
+    private TableColumn<PrescriptionReportDTO, String> colPrescMedication;
+    @FXML
+    private TableColumn<PrescriptionReportDTO, String> colPrescDosage;
+    @FXML
+    private TableColumn<PrescriptionReportDTO, String> colPrescDate;
 
-    // ===== Inventory Tab =====
-    @FXML private TableView<Inventory> tblInventory;
-    @FXML private TableColumn<Inventory, String> colInvMedication;
-    @FXML private TableColumn<Inventory, Integer> colInvQty;
-    @FXML private TableColumn<Inventory, String> colInvLastUpdated;
+    @FXML
+    private TableView<Inventory> tblInventory;
+    @FXML
+    private TableColumn<Inventory, String> colInvMedication;
+    @FXML
+    private TableColumn<Inventory, Integer> colInvQty;
+    @FXML
+    private TableColumn<Inventory, String> colInvLastUpdated;
 
     private final AppointmentService appointmentService = new AppointmentService();
     private final PrescriptionService prescriptionService = new PrescriptionService();
@@ -62,7 +78,6 @@ public class AdvancedReportsController {
         setupSearch();
     }
 
-    // ================= Appointment =================
     private void setupAppointmentTab() {
         DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
@@ -77,7 +92,6 @@ public class AdvancedReportsController {
         colApptStatus.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getStatus()));
     }
 
-    // ================= Prescription =================
     private void setupPrescriptionTab() {
         colPrescPatient.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getPatientName()));
         colPrescDoctor.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getDoctorName()));
@@ -87,7 +101,6 @@ public class AdvancedReportsController {
                 new SimpleStringProperty(d.getValue().getIssuedDate().toString()));
     }
 
-    // ================= Inventory =================
     private void setupInventoryTab() {
         colInvMedication.setCellValueFactory(d ->
                 new SimpleStringProperty(
@@ -99,7 +112,6 @@ public class AdvancedReportsController {
                 new SimpleStringProperty(d.getValue().getLastUpdated().toString()));
     }
 
-    // ================= Data =================
     private void loadData() {
 
         filteredAppointments = new FilteredList<>(
@@ -124,7 +136,6 @@ public class AdvancedReportsController {
         tblInventory.setItems(filteredInventory);
     }
 
-    // ================= Search =================
     private void setupSearch() {
 
         txtApptSearch.textProperty().addListener((obs, o, q) -> {

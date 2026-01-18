@@ -9,12 +9,18 @@ import javafx.scene.control.*;
 
 public class DepartmentController {
 
-    @FXML private TextField txtDepartmentName;
-    @FXML private TextField txtLocation;
-    @FXML private TableView<Department> tblDepartments;
-    @FXML private TableColumn<Department, Integer> colId;
-    @FXML private TableColumn<Department, String> colName;
-    @FXML private TableColumn<Department, String> colLocation;
+    @FXML
+    private TextField txtDepartmentName;
+    @FXML
+    private TextField txtLocation;
+    @FXML
+    private TableView<Department> tblDepartments;
+    @FXML
+    private TableColumn<Department, Integer> colId;
+    @FXML
+    private TableColumn<Department, String> colName;
+    @FXML
+    private TableColumn<Department, String> colLocation;
 
     private final DepartmentService departmentService = new DepartmentService();
     private final ObservableList<Department> departmentList = FXCollections.observableArrayList();

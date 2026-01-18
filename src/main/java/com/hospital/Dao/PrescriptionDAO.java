@@ -33,7 +33,6 @@ public class PrescriptionDAO {
         }
         return false;
     }
-    // Get prescription by appointment
     public Prescription getByAppointmentId(int appointmentId) {
         String sql = "SELECT prescription_id, appointment_id, issued_date, notes FROM prescription WHERE appointment_id = ?";
         Prescription prescription = null;

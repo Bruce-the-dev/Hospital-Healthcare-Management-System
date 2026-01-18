@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public class FullAppointmentReport {
 
-    private int appointmentId;   // hidden but needed
-    private int patientId;       // needed for updates
+    private int appointmentId;
+    private int patientId;
     private int doctorId;
     private final LocalDateTime appointmentDate;
     private final String status;

@@ -11,7 +11,6 @@ import java.util.List;
 
 public class InventoryDAO {
 
-    // Add new inventory entry
     public void addInventory(Inventory inventory) {
         String sql = "INSERT INTO inventory (medication_id, quantity, last_updated) VALUES (?, ?, ?)";
 
@@ -50,7 +49,6 @@ public class InventoryDAO {
         return quantity;
     }
 
-    // Update stock for a medication
     public void updateStock(int medicationId, int quantity) {
         String sql = "UPDATE inventory SET quantity = ?, last_updated = ? WHERE medication_id = ?";
 
@@ -77,7 +75,6 @@ public class InventoryDAO {
         return true;
     }
 
-    // Get all inventory items
     public List<Inventory> getAllInventory() {
         List<Inventory> inventoryList = new ArrayList<>();
         String sql = "SELECT medication_id, quantity, last_updated FROM inventory";

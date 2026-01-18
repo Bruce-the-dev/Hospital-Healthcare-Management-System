@@ -10,7 +10,6 @@ import java.io.IOException;
 
 public class LandingController {
 
-    // ==================== Management Pages ====================
 
     @FXML
     private void openDepartmentPage() throws IOException {
@@ -47,8 +46,6 @@ public class LandingController {
         loadPage("/com/hospital/UI/Prescription.fxml", "Prescription Management");
     }
 
-    // ==================== Reports ====================
-
     @FXML
     private void goToReports() throws IOException {
         loadPage("/com/hospital/UI/Reports.fxml", "Reports Management");
@@ -59,7 +56,6 @@ public class LandingController {
         loadPage("/com/hospital/UI/AdvancedReports.fxml", "Advanced Report");
     }
 
-    // ==================== Utility ====================
     private void loadPage(String fxmlFile, String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = loader.load();

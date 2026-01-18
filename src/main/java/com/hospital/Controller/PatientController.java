@@ -27,6 +27,7 @@ public class PatientController {
     @FXML private TableColumn<Patient, LocalDate> dobCol;
     @FXML private TableColumn<Patient, String> phoneCol;
     @FXML private TableColumn<Patient, String> emailCol;
+    @FXML private TextField txtSearch;
 
     private final PatientService patientService = new PatientService();
     private final ObservableList<Patient> patientList = FXCollections.observableArrayList();
@@ -47,6 +48,11 @@ public class PatientController {
 
         patientTable.getSelectionModel().selectedItemProperty()
                 .addListener((obs, oldVal, newVal) -> populateForm(newVal));
+
+        // ---------------- Live search ----------------
+        txtSearch.textProperty().addListener((obs, oldText, newText) -> {
+            searchPatients(newText);
+        });
     }
 
     private void loadPatients() {
@@ -64,9 +70,6 @@ public class PatientController {
         genderBox.setValue(String.valueOf(p.getGender()));
     }
 
-    // ================================
-    // Validation logic
-    // ================================
     private boolean validateForm() {
         String firstName = firstNameField.getText().trim();
         String lastName = lastNameField.getText().trim();
@@ -121,9 +124,7 @@ public class PatientController {
         alert.showAndWait();
     }
 
-    // ================================
-    // CRUD Handlers
-    // ================================
+
     @FXML
     private void handleAdd() {
         if (validateForm()) return;
@@ -193,4 +194,14 @@ public class PatientController {
         genderBox.setValue(null);
         patientTable.getSelectionModel().clearSelection();
     }
+
+
+private void searchPatients(String query) {
+    if (query == null || query.isEmpty()) {
+        loadPatients();
+        return;
+    }
+    patientList.setAll(patientService.searchByLastName(query));
+}
+
 }

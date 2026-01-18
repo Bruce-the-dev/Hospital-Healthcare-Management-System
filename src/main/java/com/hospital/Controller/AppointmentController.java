@@ -19,32 +19,52 @@ import java.time.LocalTime;
 
 public class AppointmentController {
 
-    // ================= CONTROLS =================
-    @FXML private ComboBox<Patient> cmbPatient;
-    @FXML private ComboBox<Doctor> cmbDoctor;
-    @FXML private ComboBox<String> cmbStatus;
+    @FXML
+    private ComboBox<Patient> cmbPatient;
+    @FXML
+    private ComboBox<Doctor> cmbDoctor;
+    @FXML
+    private ComboBox<String> cmbStatus;
 
-    @FXML private TextField txtPatient;
-    @FXML private TextField txtDoctor;
-    @FXML private TextField txtStatus;
+    @FXML
+    private TextField txtPatient;
+    @FXML
+    private TextField txtDoctor;
+    @FXML
+    private TextField txtStatus;
 
-    @FXML private DatePicker dpDate;
-    @FXML private TextField txtTime;
+    @FXML
+    private DatePicker dpDate;
+    @FXML
+    private TextField txtTime;
 
-    @FXML private TableView<FullAppointmentReport> tblAppointments;
-    @FXML private TableColumn<FullAppointmentReport, Integer> colId;
-    @FXML private TableColumn<FullAppointmentReport, String> colPatient;
-    @FXML private TableColumn<FullAppointmentReport, String> colDoctor;
-    @FXML private TableColumn<FullAppointmentReport, String> colDept;
-    @FXML private TableColumn<FullAppointmentReport, LocalDate> colDate;
-    @FXML private TableColumn<FullAppointmentReport, String> colTime;
-    @FXML private TableColumn<FullAppointmentReport, String> colStatus;
+    @FXML
+    private TableView<FullAppointmentReport> tblAppointments;
+    @FXML
+    private TableColumn<FullAppointmentReport, Integer> colId;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colPatient;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colDoctor;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colDept;
+    @FXML
+    private TableColumn<FullAppointmentReport, LocalDate> colDate;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colTime;
+    @FXML
+    private TableColumn<FullAppointmentReport, String> colStatus;
 
-    @FXML private Button btnPlus;
-    @FXML private Button btnAdd;
-    @FXML private Button btnUpdate;
-    @FXML private Button btnDelete;
-    @FXML private Button btnCancel;
+    @FXML
+    private Button btnPlus;
+    @FXML
+    private Button btnAdd;
+    @FXML
+    private Button btnUpdate;
+    @FXML
+    private Button btnDelete;
+    @FXML
+    private Button btnCancel;
 
     private final AppointmentService appointmentService = new AppointmentService();
     private final PatientService patientService = new PatientService();
@@ -54,10 +74,9 @@ public class AppointmentController {
     private final ObservableList<Doctor> doctorList = FXCollections.observableArrayList();
     private final ObservableList<FullAppointmentReport> appointmentList = FXCollections.observableArrayList();
 
-    // ================= INITIALIZE =================
     @FXML
     public void initialize() {
-        // ---------- Table bindings ----------
+
         colId.setCellValueFactory(data -> new javafx.beans.property.SimpleIntegerProperty(data.getValue().getAppointmentId()).asObject());
         colPatient.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getPatientName()));
         colDoctor.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getDoctorName()));
@@ -66,20 +85,31 @@ public class AppointmentController {
         colTime.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getAppointmentDate().toLocalTime().toString()));
         colStatus.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getStatus()));
 
-        // ---------- Status ----------
         cmbStatus.setItems(FXCollections.observableArrayList("Pending", "Completed", "Cancelled"));
 
         // ---------- ComboBox converters ----------
         cmbPatient.setConverter(new StringConverter<>() {
             @Override
-            public String toString(Patient p) { return p == null ? "" : p.getFirstName() + " " + p.getLastName(); }
-            @Override public Patient fromString(String s) { return null; }
+            public String toString(Patient p) {
+                return p == null ? "" : p.getFirstName() + " " + p.getLastName();
+            }
+
+            @Override
+            public Patient fromString(String s) {
+                return null;
+            }
         });
 
         cmbDoctor.setConverter(new StringConverter<>() {
             @Override
-            public String toString(Doctor d) { return d == null ? "" : d.getFirstName() + " " + d.getLastName(); }
-            @Override public Doctor fromString(String s) { return null; }
+            public String toString(Doctor d) {
+                return d == null ? "" : d.getFirstName() + " " + d.getLastName();
+            }
+
+            @Override
+            public Doctor fromString(String s) {
+                return null;
+            }
         });
 
         loadPatients();
@@ -95,68 +125,102 @@ public class AppointmentController {
         });
     }
 
-    // ================= VIEW MODES =================
     private void setViewMode() {
         // Hide form fields
-        cmbPatient.setVisible(false); cmbPatient.setManaged(false);
-        cmbDoctor.setVisible(false); cmbDoctor.setManaged(false);
-        cmbStatus.setVisible(false); cmbStatus.setManaged(false);
-        dpDate.setVisible(false); dpDate.setManaged(false);
-        txtTime.setVisible(false); txtTime.setManaged(false);
+        cmbPatient.setVisible(false);
+        cmbPatient.setManaged(false);
+        cmbDoctor.setVisible(false);
+        cmbDoctor.setManaged(false);
+        cmbStatus.setVisible(false);
+        cmbStatus.setManaged(false);
+        dpDate.setVisible(false);
+        dpDate.setManaged(false);
+        txtTime.setVisible(false);
+        txtTime.setManaged(false);
 
-        txtPatient.setVisible(false); txtPatient.setManaged(false);
-        txtDoctor.setVisible(false); txtDoctor.setManaged(false);
-        txtStatus.setVisible(false); txtStatus.setManaged(false);
+        txtPatient.setVisible(false);
+        txtPatient.setManaged(false);
+        txtDoctor.setVisible(false);
+        txtDoctor.setManaged(false);
+        txtStatus.setVisible(false);
+        txtStatus.setManaged(false);
 
-        // Buttons
-        btnAdd.setVisible(false); btnAdd.setManaged(false);
-        btnUpdate.setVisible(false); btnUpdate.setManaged(false);
-        btnCancel.setVisible(false); btnCancel.setManaged(false);
+        btnAdd.setVisible(false);
+        btnAdd.setManaged(false);
+        btnUpdate.setVisible(false);
+        btnUpdate.setManaged(false);
+        btnCancel.setVisible(false);
+        btnCancel.setManaged(false);
 
-        btnPlus.setVisible(true); btnPlus.setManaged(true);
-        btnDelete.setVisible(true); btnDelete.setManaged(true);
+        btnPlus.setVisible(true);
+        btnPlus.setManaged(true);
+        btnDelete.setVisible(true);
+        btnDelete.setManaged(true);
 
         clearFields();
         tblAppointments.getSelectionModel().clearSelection();
     }
 
     private void enterAddMode() {
-        cmbPatient.setVisible(true); cmbPatient.setManaged(true);
-        cmbDoctor.setVisible(true); cmbDoctor.setManaged(true);
-        dpDate.setVisible(true); dpDate.setManaged(true);
-        txtTime.setVisible(true); txtTime.setManaged(true);
+        cmbPatient.setVisible(true);
+        cmbPatient.setManaged(true);
+        cmbDoctor.setVisible(true);
+        cmbDoctor.setManaged(true);
+        dpDate.setVisible(true);
+        dpDate.setManaged(true);
+        txtTime.setVisible(true);
+        txtTime.setManaged(true);
 
-        btnAdd.setVisible(true); btnAdd.setManaged(true);
-        btnCancel.setVisible(true); btnCancel.setManaged(true);
+        btnAdd.setVisible(true);
+        btnAdd.setManaged(true);
+        btnCancel.setVisible(true);
+        btnCancel.setManaged(true);
 
         // Hide unnecessary buttons
-        btnPlus.setVisible(false); btnPlus.setManaged(false);
-        btnUpdate.setVisible(false); btnUpdate.setManaged(false);
-        cmbStatus.setVisible(false); cmbStatus.setManaged(false);
-        txtPatient.setVisible(false); txtPatient.setManaged(false);
-        txtDoctor.setVisible(false); txtDoctor.setManaged(false);
-        txtStatus.setVisible(false); txtStatus.setManaged(false);
+        btnPlus.setVisible(false);
+        btnPlus.setManaged(false);
+        btnUpdate.setVisible(false);
+        btnUpdate.setManaged(false);
+        cmbStatus.setVisible(false);
+        cmbStatus.setManaged(false);
+        txtPatient.setVisible(false);
+        txtPatient.setManaged(false);
+        txtDoctor.setVisible(false);
+        txtDoctor.setManaged(false);
+        txtStatus.setVisible(false);
+        txtStatus.setManaged(false);
 
         clearFields();
     }
 
     private void enterUpdateMode(FullAppointmentReport a) {
-        cmbPatient.setVisible(true); cmbPatient.setManaged(true);
-        cmbDoctor.setVisible(true); cmbDoctor.setManaged(true);
-        dpDate.setVisible(true); dpDate.setManaged(true);
-        txtTime.setVisible(true); txtTime.setManaged(true);
-        cmbStatus.setVisible(true); cmbStatus.setManaged(true);
+        cmbPatient.setVisible(true);
+        cmbPatient.setManaged(true);
+        cmbDoctor.setVisible(true);
+        cmbDoctor.setManaged(true);
+        dpDate.setVisible(true);
+        dpDate.setManaged(true);
+        txtTime.setVisible(true);
+        txtTime.setManaged(true);
+        cmbStatus.setVisible(true);
+        cmbStatus.setManaged(true);
 
-        txtPatient.setVisible(false); txtPatient.setManaged(false);
-        txtDoctor.setVisible(false); txtDoctor.setManaged(false);
-        txtStatus.setVisible(false); txtStatus.setManaged(false);
+        txtPatient.setVisible(false);
+        txtPatient.setManaged(false);
+        txtDoctor.setVisible(false);
+        txtDoctor.setManaged(false);
+        txtStatus.setVisible(false);
+        txtStatus.setManaged(false);
 
-        // Buttons
-        btnUpdate.setVisible(true); btnUpdate.setManaged(true);
-        btnCancel.setVisible(true); btnCancel.setManaged(true);
+        btnUpdate.setVisible(true);
+        btnUpdate.setManaged(true);
+        btnCancel.setVisible(true);
+        btnCancel.setManaged(true);
 
-        btnAdd.setVisible(false); btnAdd.setManaged(false);
-        btnPlus.setVisible(false); btnPlus.setManaged(false);
+        btnAdd.setVisible(false);
+        btnAdd.setManaged(false);
+        btnPlus.setVisible(false);
+        btnPlus.setManaged(false);
 
         // Fill fields
         cmbPatient.setValue(patientList.stream()
@@ -171,7 +235,6 @@ public class AppointmentController {
         cmbStatus.setValue(a.getStatus());
     }
 
-    // ================= LOADERS =================
     private void loadPatients() {
         patientList.setAll(patientService.getAllPatients());
         cmbPatient.setItems(patientList);
@@ -187,12 +250,15 @@ public class AppointmentController {
         tblAppointments.setItems(appointmentList);
     }
 
-    // ================= BUTTON HANDLERS =================
     @FXML
-    private void handlePlus() { enterAddMode(); }
+    private void handlePlus() {
+        enterAddMode();
+    }
 
     @FXML
-    private void handleCancelEdit() { setViewMode(); }
+    private void handleCancelEdit() {
+        setViewMode();
+    }
 
     @FXML
     private void handleAddAppointment() {
@@ -243,11 +309,18 @@ public class AppointmentController {
     @FXML
     private void handleUpdateAppointment() {
         FullAppointmentReport selected = tblAppointments.getSelectionModel().getSelectedItem();
-        if (selected == null) { showAlert("Selection Error", "Please select an appointment"); return; }
+        if (selected == null) {
+            showAlert("Selection Error", "Please select an appointment");
+            return;
+        }
 
         LocalDateTime dateTime;
-        try { dateTime = LocalDateTime.of(dpDate.getValue(), LocalTime.parse(txtTime.getText().trim())); }
-        catch (Exception e) { showAlert("Validation Error", "Time must be in HH:mm format"); return; }
+        try {
+            dateTime = LocalDateTime.of(dpDate.getValue(), LocalTime.parse(txtTime.getText().trim()));
+        } catch (Exception e) {
+            showAlert("Validation Error", "Time must be in HH:mm format");
+            return;
+        }
 
         Appointment a = appointmentService.getAppointmentById(selected.getAppointmentId());
         a.setAppointmentDate(dateTime);
@@ -265,14 +338,16 @@ public class AppointmentController {
     @FXML
     private void handleDeleteAppointment() {
         FullAppointmentReport selected = tblAppointments.getSelectionModel().getSelectedItem();
-        if (selected == null) { showAlert("Selection Error", "Please select an appointment"); return; }
+        if (selected == null) {
+            showAlert("Selection Error", "Please select an appointment");
+            return;
+        }
 
         appointmentService.deleteAppointment(selected.getAppointmentId());
         loadAppointments();
         setViewMode();
     }
 
-    // ================= UTIL =================
     private void clearFields() {
         cmbPatient.getSelectionModel().clearSelection();
         cmbDoctor.getSelectionModel().clearSelection();
@@ -288,12 +363,13 @@ public class AppointmentController {
         alert.setContentText(msg);
         alert.showAndWait();
     }
+
     private void showInfo(String msg) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(null);
-            alert.setContentText(msg);
-            alert.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
 
     }
 }

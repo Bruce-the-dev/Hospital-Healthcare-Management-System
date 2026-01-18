@@ -11,12 +11,11 @@ import java.util.List;
 
 public class AppointmentDAO {
 
-    // ----------------- CREATE -----------------
     public boolean addAppointment(Appointment appointment) {
         String sql = """
-            INSERT INTO appointment (patient_id, doctor_id, appointment_date, status)
-            VALUES (?, ?, ?, ?)
-        """;
+                    INSERT INTO appointment (patient_id, doctor_id, appointment_date, status)
+                    VALUES (?, ?, ?, ?)
+                """;
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -41,7 +40,6 @@ public class AppointmentDAO {
         return false;
     }
 
-    // ----------------- READ -----------------
     public Appointment getAppointmentById(int id) {
         String sql = "SELECT * FROM appointment WHERE appointment_id = ?";
 
@@ -77,13 +75,12 @@ public class AppointmentDAO {
         return list;
     }
 
-    // ----------------- UPDATE -----------------
     public boolean updateAppointment(Appointment appointment) {
         String sql = """
-            UPDATE appointment
-            SET patient_id = ?, doctor_id = ?, appointment_date = ?, status = ?
-            WHERE appointment_id = ?
-        """;
+                    UPDATE appointment
+                    SET patient_id = ?, doctor_id = ?, appointment_date = ?, status = ?
+                    WHERE appointment_id = ?
+                """;
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -102,7 +99,6 @@ public class AppointmentDAO {
         return false;
     }
 
-    // ----------------- DELETE -----------------
     public boolean deleteAppointment(int id) {
         String sql = "DELETE FROM appointment WHERE appointment_id = ?";
 
@@ -118,24 +114,21 @@ public class AppointmentDAO {
         return false;
     }
 
-    // =====================================================
-    // =============== JOIN-BASED QUERIES ==================
-    // =====================================================
 
     // 🔹 Appointments for a patient (with doctor name)
     public List<AppointmentReport> getAppointmentsByPatient(int patientId) {
         List<AppointmentReport> list = new ArrayList<>();
 
         String sql = """
-            SELECT a.appointment_id,
-                   a.appointment_date,
-                   a.status,
-                   d.first_name AS doctor_first_name,
-                   d.last_name  AS doctor_last_name
-            FROM appointment a
-            JOIN doctor d ON a.doctor_id = d.doctor_id
-            WHERE a.patient_id = ?
-        """;
+                    SELECT a.appointment_id,
+                           a.appointment_date,
+                           a.status,
+                           d.first_name AS doctor_first_name,
+                           d.last_name  AS doctor_last_name
+                    FROM appointment a
+                    JOIN doctor d ON a.doctor_id = d.doctor_id
+                    WHERE a.patient_id = ?
+                """;
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -163,15 +156,15 @@ public class AppointmentDAO {
         List<AppointmentReport> list = new ArrayList<>();
 
         String sql = """
-            SELECT a.appointment_id,
-                   a.appointment_date,
-                   a.status,
-                   p.first_name AS patient_first_name,
-                   p.last_name  AS patient_last_name
-            FROM appointment a
-            JOIN patient p ON a.patient_id = p.patient_id
-            WHERE a.doctor_id = ?
-        """;
+                    SELECT a.appointment_id,
+                           a.appointment_date,
+                           a.status,
+                           p.first_name AS patient_first_name,
+                           p.last_name  AS patient_last_name
+                    FROM appointment a
+                    JOIN patient p ON a.patient_id = p.patient_id
+                    WHERE a.doctor_id = ?
+                """;
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -199,19 +192,19 @@ public class AppointmentDAO {
         List<FullAppointmentReport> list = new ArrayList<>();
 
         String sql = """
-            SELECT a.appointment_id,
-                   a.appointment_date,
-                   a.status,
-                   p.first_name AS patient_first,
-                   p.last_name  AS patient_last,
-                   d.first_name AS doctor_first,
-                   d.last_name  AS doctor_last,
-                   dept.name    AS department_name
-            FROM appointment a
-            JOIN patient p ON a.patient_id = p.patient_id
-            JOIN doctor d ON a.doctor_id = d.doctor_id
-            JOIN department dept ON d.department_id = dept.department_id
-        """;
+                    SELECT a.appointment_id,
+                           a.appointment_date,
+                           a.status,
+                           p.first_name AS patient_first,
+                           p.last_name  AS patient_last,
+                           d.first_name AS doctor_first,
+                           d.last_name  AS doctor_last,
+                           dept.name    AS department_name
+                    FROM appointment a
+                    JOIN patient p ON a.patient_id = p.patient_id
+                    JOIN doctor d ON a.doctor_id = d.doctor_id
+                    JOIN department dept ON d.department_id = dept.department_id
+                """;
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -227,7 +220,7 @@ public class AppointmentDAO {
                 );
 
                 report.setAppointmentId(rs.getInt("appointment_id"));
-            list.add(report);
+                list.add(report);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -241,26 +234,26 @@ public class AppointmentDAO {
         List<FullAppointmentReport> list = new ArrayList<>();
 
         String sql = """
-        SELECT
-            a.appointment_id,
-            a.appointment_date,
-            a.status,
-            p.patient_id,
-            p.first_name||' '|| p.last_name AS patient_name,
-            d.doctor_id,
-            d.first_name||' '||d.last_name AS doctor_name,
-            dept.name AS department_name
-        FROM appointment a
-        JOIN patient p ON a.patient_id = p.patient_id
-        JOIN doctor d ON a.doctor_id = d.doctor_id
-        JOIN department dept ON d.department_id = dept.department_id
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM prescription pr
-            WHERE pr.appointment_id = a.appointment_id
-        )
-        ORDER BY a.appointment_date
-    """;
+                    SELECT
+                        a.appointment_id,
+                        a.appointment_date,
+                        a.status,
+                        p.patient_id,
+                        p.first_name||' '|| p.last_name AS patient_name,
+                        d.doctor_id,
+                        d.first_name||' '||d.last_name AS doctor_name,
+                        dept.name AS department_name
+                    FROM appointment a
+                    JOIN patient p ON a.patient_id = p.patient_id
+                    JOIN doctor d ON a.doctor_id = d.doctor_id
+                    JOIN department dept ON d.department_id = dept.department_id
+                    WHERE NOT EXISTS (
+                        SELECT 1
+                        FROM prescription pr
+                        WHERE pr.appointment_id = a.appointment_id
+                    )
+                    ORDER BY a.appointment_date
+                """;
 
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -275,7 +268,6 @@ public class AppointmentDAO {
                         rs.getString("department_name")
                 );
 
-// 🔑 set hidden identifiers
                 dto.setAppointmentId(rs.getInt("appointment_id"));
                 dto.setPatientId(rs.getInt("patient_id"));
                 dto.setDoctorId(rs.getInt("doctor_id"));
@@ -292,7 +284,6 @@ public class AppointmentDAO {
     }
 
 
-    // ----------------- Helper -----------------
     private Appointment mapAppointment(ResultSet rs) throws SQLException {
         Appointment a = new Appointment();
         a.setAppointmentId(rs.getInt("appointment_id"));

@@ -8,7 +8,6 @@ public class AppointmentReport {
     private final LocalDateTime appointmentDate;
     private final String status;
     private final String relatedPersonName;
-    // doctor name OR patient name depending on query
 
     public AppointmentReport(int appointmentId,
                              LocalDateTime appointmentDate,

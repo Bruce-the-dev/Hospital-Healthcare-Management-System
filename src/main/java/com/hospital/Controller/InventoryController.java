@@ -14,19 +14,31 @@ import javafx.util.StringConverter;
 
 public class InventoryController {
 
-    @FXML private TableView<InventoryViewDTO> tblInventory;
-    @FXML private TableColumn<InventoryViewDTO, String> colMedication;
-    @FXML private TableColumn<InventoryViewDTO, Integer> colQuantity;
-    @FXML private TableColumn<InventoryViewDTO, String> colLastUpdated;
+    @FXML
+    private TableView<InventoryViewDTO> tblInventory;
+    @FXML
+    private TableColumn<InventoryViewDTO, String> colMedication;
+    @FXML
+    private TableColumn<InventoryViewDTO, Integer> colQuantity;
+    @FXML
+    private TableColumn<InventoryViewDTO, String> colLastUpdated;
 
-    @FXML private ComboBox<Medication> cmbMedication;
-    @FXML private TextField txtQuantity;
-    @FXML private Button btnAddStock;
-    @FXML private Button btnUpdateStock;
-    @FXML private Button btnReduceStock;
-    @FXML private Button btnCancel;
-    @FXML private Button btnPlus;
-    @FXML private Label lblLowStock;
+    @FXML
+    private ComboBox<Medication> cmbMedication;
+    @FXML
+    private TextField txtQuantity;
+    @FXML
+    private Button btnAddStock;
+    @FXML
+    private Button btnUpdateStock;
+    @FXML
+    private Button btnReduceStock;
+    @FXML
+    private Button btnCancel;
+    @FXML
+    private Button btnPlus;
+    @FXML
+    private Label lblLowStock;
 
     private final InventoryService inventoryService = new InventoryService();
     private final MedicationService medicationService = new MedicationService();
@@ -36,34 +48,33 @@ public class InventoryController {
 
     @FXML
     public void initialize() {
-        // ---------- Table Columns ----------
         colMedication.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getMedicationName()));
         colQuantity.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getQuantity()).asObject());
         colLastUpdated.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getLastUpdated().toString()));
 
-        // ---------- ComboBox display ----------
         cmbMedication.setConverter(new StringConverter<>() {
             @Override
-            public String toString(Medication medication) { return medication == null ? "" : medication.getName(); }
+            public String toString(Medication medication) {
+                return medication == null ? "" : medication.getName();
+            }
+
             @Override
-            public Medication fromString(String string) { return null; }
+            public Medication fromString(String string) {
+                return null;
+            }
         });
 
-        // ---------- Load data ----------
         loadMedications();
         loadInventory();
 
-        // ---------- Initial visibility ----------
         showInputFields(false);
 
-        // ---------- Table row selection ----------
         tblInventory.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, selected) -> {
             btnReduceStock.setDisable(selected == null);
             if (selected != null) enterUpdateMode(selected);
             else clearInputFields();
         });
 
-        // ---------- Numeric input validation ----------
         txtQuantity.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.matches("\\d*")) {
                 txtQuantity.setText(newVal.replaceAll("\\D", ""));
@@ -86,7 +97,6 @@ public class InventoryController {
         });
     }
 
-    // ---------- SHOW/HIDE INPUT FIELDS ----------
     private void showInputFields(boolean show) {
         cmbMedication.setVisible(show);
         cmbMedication.setManaged(show);
@@ -102,7 +112,6 @@ public class InventoryController {
         btnPlus.setVisible(!show);
     }
 
-    // ---------- ENTER UPDATE MODE ----------
     private void enterUpdateMode(InventoryViewDTO item) {
         showInputFields(true);
         cmbMedication.getSelectionModel().select(
@@ -117,7 +126,8 @@ public class InventoryController {
         btnCancel.setVisible(true);
     }
 
-    @FXML private void handlePlus() {
+    @FXML
+    private void handlePlus() {
         showInputFields(true);
         btnAddStock.setVisible(true);
         btnUpdateStock.setVisible(false);
@@ -125,13 +135,14 @@ public class InventoryController {
         clearInputFields();
     }
 
-    @FXML private void handleCancel() {
+    @FXML
+    private void handleCancel() {
         showInputFields(false);
         clearInputFields();
     }
 
-    // ---------- ACTIONS ----------
-    @FXML private void handleAddStock() {
+    @FXML
+    private void handleAddStock() {
         if (validateInput()) return;
 
         int qty = Integer.parseInt(txtQuantity.getText().trim());
@@ -141,7 +152,8 @@ public class InventoryController {
         handleCancel();
     }
 
-    @FXML private void handleUpdateStock() {
+    @FXML
+    private void handleUpdateStock() {
         if (validateInput()) return;
 
         int qty = Integer.parseInt(txtQuantity.getText().trim());
@@ -151,7 +163,8 @@ public class InventoryController {
         handleCancel();
     }
 
-    @FXML private void handleReduceStock() {
+    @FXML
+    private void handleReduceStock() {
         InventoryViewDTO selected = tblInventory.getSelectionModel().getSelectedItem();
         if (selected == null) return;
 
@@ -163,7 +176,10 @@ public class InventoryController {
         dialog.showAndWait().ifPresent(qtyText -> {
             try {
                 int qty = Integer.parseInt(qtyText.trim());
-                if (qty <= 0) { showAlert("Error", "Quantity must be greater than zero"); return; }
+                if (qty <= 0) {
+                    showAlert("Error", "Quantity must be greater than zero");
+                    return;
+                }
                 boolean success = inventoryService.deductStock(selected.getMedicationId(), qty);
                 if (success) showAlert("Success", "Stock reduced successfully");
                 else showAlert("Error", "Insufficient stock");
@@ -174,7 +190,6 @@ public class InventoryController {
         });
     }
 
-    // ---------- UTIL ----------
     private void loadMedications() {
         medicationList.setAll(medicationService.getAllMedications());
         cmbMedication.setItems(medicationList);
@@ -184,20 +199,29 @@ public class InventoryController {
         ObservableList<InventoryViewDTO> inventory = FXCollections.observableArrayList(inventoryService.getInventoryView());
         tblInventory.setItems(inventory);
 
-        // Update low stock label
         long lowCount = inventory.stream().filter(i -> i.getQuantity() <= LOW_STOCK_THRESHOLD).count();
         lblLowStock.setText(lowCount > 0 ? "⚠ Low stock items: " + lowCount : "");
     }
 
     private boolean validateInput() {
-        if (cmbMedication.getValue() == null) { showAlert("Validation Error", "Please select a medication"); return true; }
+        if (cmbMedication.getValue() == null) {
+            showAlert("Validation Error", "Please select a medication");
+            return true;
+        }
         String qtyText = txtQuantity.getText().trim();
-        if (qtyText.isEmpty()) { showAlert("Validation Error", "Quantity cannot be empty"); return true; }
+        if (qtyText.isEmpty()) {
+            showAlert("Validation Error", "Quantity cannot be empty");
+            return true;
+        }
         try {
             int qty = Integer.parseInt(qtyText);
-            if (qty <= 0) { showAlert("Validation Error", "Quantity must be greater than zero"); return true; }
+            if (qty <= 0) {
+                showAlert("Validation Error", "Quantity must be greater than zero");
+                return true;
+            }
         } catch (NumberFormatException e) {
-            showAlert("Validation Error", "Quantity must be a valid number"); return true;
+            showAlert("Validation Error", "Quantity must be a valid number");
+            return true;
         }
         return false;
     }

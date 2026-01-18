@@ -9,12 +9,17 @@ import javafx.scene.control.*;
 
 public class MedicationController {
 
-    @FXML private TextField txtName;
-    @FXML private TextArea txtDescription;
+    @FXML
+    private TextField txtName;
+    @FXML
+    private TextArea txtDescription;
 
-    @FXML private TableView<Medication> tblMedication;
-    @FXML private TableColumn<Medication, String> colName;
-    @FXML private TableColumn<Medication, String> colDescription;
+    @FXML
+    private TableView<Medication> tblMedication;
+    @FXML
+    private TableColumn<Medication, String> colName;
+    @FXML
+    private TableColumn<Medication, String> colDescription;
 
     private final MedicationService medicationService = new MedicationService();
     private final ObservableList<Medication> medicationList = FXCollections.observableArrayList();
@@ -28,7 +33,6 @@ public class MedicationController {
 
         loadMedications();
 
-        // Populate form when a row is selected
         tblMedication.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) populateForm(newSelection);
         });
@@ -39,7 +43,6 @@ public class MedicationController {
         txtDescription.setText(m.getDescription());
     }
 
-    // ===================== Validation =====================
     private boolean validateForm() {
         if (txtName.getText().trim().isEmpty()) {
             showAlert("Validation Error", "Medication name cannot be empty.");
@@ -52,7 +55,6 @@ public class MedicationController {
         return true;
     }
 
-    // ===================== CRUD =====================
     @FXML
     private void handleAddMedication() {
         if (!validateForm()) return;

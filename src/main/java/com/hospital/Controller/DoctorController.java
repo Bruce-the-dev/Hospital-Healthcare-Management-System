@@ -64,11 +64,7 @@ public class DoctorController {
         txtSpecialization.setText(d.getSpecialization());
         cmbDepartment.setValue(departmentService.getDepartmentById(d.getDepartmentId()));
     }
-
-    // ==============================
-    // Validation
-    // ==============================
-    private boolean validateForm() {
+   private boolean validateForm() {
         if (txtFirstName.getText().trim().isEmpty()) {
             showAlert("Validation Error", "First name is required.");
             return true;
@@ -88,9 +84,6 @@ public class DoctorController {
         return false;
     }
 
-    // ==============================
-    // CRUD Handlers
-    // ==============================
     @FXML
     private void handleAddDoctor() {
         if (validateForm()) return;

@@ -35,7 +35,6 @@ public class PrescriptionController {
 
     @FXML
     public void initialize() {
-        // ---------- Appointments ----------
         ObservableList<FullAppointmentReport> appointments =
                 FXCollections.observableArrayList(appointmentService.getAppointmentsWithoutPrescription());
         cmbAppointment.setItems(appointments);
@@ -54,7 +53,6 @@ public class PrescriptionController {
             }
         });
 
-        // ---------- Medications ----------
         cmbMedication.setItems(FXCollections.observableArrayList(medicationService.getAllMedications()));
         cmbMedication.setConverter(new StringConverter<>() {
             @Override
@@ -68,7 +66,6 @@ public class PrescriptionController {
             }
         });
 
-        // ---------- Table ----------
         colMedication.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(
                         medicationService.getMedicationById(data.getValue().getMedicationId()).getName()
@@ -79,7 +76,6 @@ public class PrescriptionController {
         );
         tblMedications.setItems(medications);
 
-        // ---------- Button states ----------
         btnSavePrescription.setDisable(true); // initially disabled
 
         // Enable Save button only when there’s at least one medication
@@ -100,7 +96,6 @@ public class PrescriptionController {
         if (btnAdd != null) btnAdd.setDisable(disable);
     }
 
-    // ---------- Add Medication ----------
     @FXML
     private void handleAddMedication() {
         Medication med = cmbMedication.getValue();
@@ -117,7 +112,6 @@ public class PrescriptionController {
         txtDosage.clear();
     }
 
-    // ---------- Save Prescription ----------
     @FXML
     private void handleSavePrescription() {
         FullAppointmentReport selectedAppointment = cmbAppointment.getValue();
@@ -147,7 +141,6 @@ public class PrescriptionController {
         }
     }
 
-    // ---------- Helper: Alert ----------
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
