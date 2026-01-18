@@ -27,7 +27,6 @@ public class PatientController {
     @FXML private TableColumn<Patient, LocalDate> dobCol;
     @FXML private TableColumn<Patient, String> phoneCol;
     @FXML private TableColumn<Patient, String> emailCol;
-    @FXML private TextField txtSearch;
 
     private final PatientService patientService = new PatientService();
     private final ObservableList<Patient> patientList = FXCollections.observableArrayList();
@@ -50,7 +49,7 @@ public class PatientController {
                 .addListener((obs, oldVal, newVal) -> populateForm(newVal));
 
         // ---------------- Live search ----------------
-        txtSearch.textProperty().addListener((obs, oldText, newText) -> {
+        searchField.textProperty().addListener((obs, oldText, newText) -> {
             searchPatients(newText);
         });
     }
